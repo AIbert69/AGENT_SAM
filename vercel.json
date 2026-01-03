@@ -1,19 +1,9 @@
 {
-  "version": 2,
   "buildCommand": "",
   "outputDirectory": ".",
-  "routes": [
-    {
-      "src": "/proposal-editor",
-      "dest": "/proposal-editor.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+  "rewrites": [
+    { "source": "/proposal-editor", "destination": "/proposal-editor.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
