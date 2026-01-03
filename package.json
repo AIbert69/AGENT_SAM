@@ -1,0 +1,19 @@
+{
+  "name": "agent-sam",
+  "version": "1.0.0",
+  "description": "Singh Automation Business Development Platform",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "government-contracting",
+    "sam.gov",
+    "automation",
+    "robotics"
+  ],
+  "author": "Singh Automation",
+  "license": "MIT"
+}
