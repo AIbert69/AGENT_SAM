@@ -7,760 +7,228 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #10b981; --primary-dark: #059669;
-            --dark: #0f1419; --card: #1a2332; --card-hover: #232d3f; --border: #2d3748;
-            --gray: #6b7280; --gray-light: #9ca3af;
-            --blue: #3b82f6; --purple: #8b5cf6; --orange: #f59e0b; --red: #ef4444;
-            --cyan: #06b6d4; --amber: #d97706;
-            --green: #10b981;
+        :root { 
+            --green: #9ACD32; --green-dark: #7BA428;
+            --dark: #0a0a0a; --card: #141414; --card-hover: #1a1a1a; --border: #2a2a2a;
+            --gray: #888; --blue: #3b82f6; --purple: #8b5cf6; --orange: #f59e0b; --red: #ef4444;
         }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--dark); color: #fff; min-height: 100vh; }
-
-        /* Header */
-        .header {
-            background: linear-gradient(180deg, #161d27 0%, var(--dark) 100%);
-            padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border);
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; min-height: 100vh; }
+        
+        .header { 
+            background: linear-gradient(180deg, #111 0%, var(--dark) 100%);
+            padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
         }
-        .logo { display: flex; align-items: center; gap: 0.75rem; }
-        .logo-icon {
-            width: 42px; height: 42px;
-            background: linear-gradient(135deg, #10b981, #06b6d4);
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-weight: 700; color: #fff; font-size: 0.9rem;
-        }
-        .logo-text { font-size: 1.3rem; font-weight: 700; }
-        .logo-text span { color: #fff; }
-        .logo-text .auto { color: var(--gray-light); font-weight: 400; }
-        .logo-subtitle { font-size: 0.65rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-
-        /* Status badges in header */
-        .header-status { display: flex; gap: 0.5rem; }
-        .status-badge {
-            display: flex; align-items: center; gap: 0.4rem;
-            padding: 0.4rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500;
-            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-        .status-badge.claude { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); }
-        .status-badge.claude .dot { background: var(--purple); }
-
-        /* Navigation */
-        .nav { display: flex; gap: 0.5rem; margin-top: 1rem; padding: 0 1.5rem; }
-        .nav-btn {
-            padding: 0.65rem 1.25rem; background: transparent; border: 1px solid var(--border);
-            border-radius: 10px; color: var(--gray-light); cursor: pointer; font-weight: 500;
-            font-size: 0.85rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;
-        }
-        .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); border-color: var(--gray); }
-        .nav-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
-        .nav-btn .icon { font-size: 1rem; }
-
-        /* Stats Bar - Card Grid */
-        .stats-bar {
-            display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem;
-            padding: 1.5rem; background: transparent;
-        }
-        .stat-card {
-            background: var(--card); padding: 1.25rem; border-radius: 16px;
-            border: 1px solid var(--border); position: relative; overflow: hidden;
-            min-height: 110px;
-        }
-        .stat-card::after {
-            content: ''; position: absolute; right: -20px; bottom: -20px;
-            width: 100px; height: 100px; border-radius: 50%;
-            opacity: 0.15;
-        }
-        .stat-card.live::after { background: var(--green); }
-        .stat-card.total::after { background: var(--blue); }
-        .stat-card.qualified::after { background: var(--purple); }
-        .stat-card.urgent::after { background: var(--amber); }
-        .stat-card.value::after { background: var(--green); }
-        .stat-card.match::after { background: var(--blue); }
-
-        .stat-card .stat-icon {
-            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem; opacity: 0.9;
-        }
-        .stat-card.live .stat-icon { background: rgba(16, 185, 129, 0.2); color: var(--green); }
-        .stat-card.total .stat-icon { background: rgba(59, 130, 246, 0.2); color: var(--blue); }
-        .stat-card.qualified .stat-icon { background: rgba(139, 92, 246, 0.2); color: var(--purple); }
-        .stat-card.urgent .stat-icon { background: rgba(217, 119, 6, 0.2); color: var(--amber); }
-        .stat-card.value .stat-icon { background: rgba(16, 185, 129, 0.2); color: var(--green); }
-        .stat-card.match .stat-icon { background: rgba(59, 130, 246, 0.2); color: var(--blue); }
-
-        .stat-label { font-size: 0.7rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
-        .stat-value { font-size: 2rem; font-weight: 700; color: #fff; }
-        .stat-card.value .stat-value { color: var(--green); }
-
-        /* Main Layout */
-        .main { display: grid; grid-template-columns: 240px 1fr 280px; gap: 1.5rem; padding: 0 1.5rem 1.5rem; min-height: calc(100vh - 280px); }
-        .main-full { grid-template-columns: 1fr; max-width: 1200px; margin: 0 auto; }
-
-        /* Panels */
-        .panel { background: var(--card); border-radius: 16px; padding: 1.25rem; border: 1px solid var(--border); }
-        .panel-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
-        .panel-header .icon { font-size: 1rem; opacity: 0.7; }
-        .panel-title { font-size: 0.8rem; color: #fff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* Sidebar */
-        .sidebar { display: flex; flex-direction: column; gap: 1rem; }
-
-        /* Sources Panel */
-        .source-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .source-item:last-child { border-bottom: none; }
-        .source-info { display: flex; align-items: center; gap: 0.75rem; }
-        .source-icon {
-            width: 32px; height: 32px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; background: rgba(255,255,255,0.05);
-        }
-        .source-name { font-size: 0.85rem; font-weight: 500; }
-        .source-badge {
-            font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 4px;
-            font-weight: 600; margin-left: 0.5rem;
-        }
-        .source-badge.live { background: var(--green); color: #fff; }
-        .source-badge.beta { background: var(--purple); color: #fff; }
-        .source-toggle {
-            width: 36px; height: 20px; background: var(--border); border-radius: 10px;
-            position: relative; cursor: pointer; transition: background 0.2s;
-        }
-        .source-toggle.active { background: var(--green); }
-        .source-toggle::after {
-            content: ''; position: absolute; top: 2px; left: 2px;
-            width: 16px; height: 16px; background: #fff; border-radius: 50%;
-            transition: transform 0.2s;
-        }
-        .source-toggle.active::after { transform: translateX(16px); }
-
-        /* Certifications */
-        .cert-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .cert-badge {
-            padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.7rem;
-            font-weight: 600; background: rgba(16, 185, 129, 0.1); color: var(--green);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        .cert-badge.orange { background: rgba(245, 158, 11, 0.1); color: var(--orange); border-color: rgba(245, 158, 11, 0.2); }
-
-        /* Content Area - Opportunity Table */
-        .content { display: flex; flex-direction: column; gap: 1rem; }
-        .content-header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--card); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid var(--border);
-        }
-        .search-box {
-            display: flex; align-items: center; gap: 0.5rem;
-            background: rgba(255,255,255,0.05); padding: 0.5rem 1rem; border-radius: 8px;
-            border: 1px solid var(--border); min-width: 280px;
-        }
-        .search-box input {
-            background: transparent; border: none; color: #fff; font-size: 0.85rem;
-            outline: none; width: 100%;
-        }
-        .search-box input::placeholder { color: var(--gray); }
-
-        .filter-pills { display: flex; gap: 0.25rem; }
-        .filter-pill {
-            padding: 0.5rem 1rem; background: transparent; border: none;
-            border-radius: 8px; color: var(--gray-light); cursor: pointer;
-            font-size: 0.8rem; font-weight: 500; transition: all 0.2s;
-        }
-        .filter-pill:hover { color: #fff; background: rgba(255,255,255,0.05); }
-        .filter-pill.active { background: var(--green); color: #fff; }
-
-        .btn {
-            padding: 0.6rem 1.25rem; border: none; border-radius: 10px; cursor: pointer;
-            font-weight: 600; font-size: 0.85rem; transition: all 0.15s;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-        }
-        .btn-primary { background: var(--green); color: #fff; }
-        .btn-primary:hover { background: var(--primary-dark); }
+        .logo { display: flex; align-items: center; gap: 0.6rem; }
+        .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; }
+        .logo-text { font-size: 1.2rem; font-weight: 700; }
+        .logo-text span { color: var(--green); }
+        
+        .nav { display: flex; gap: 0.25rem; background: var(--card); padding: 0.25rem; border-radius: 8px; }
+        .nav-btn { padding: 0.5rem 1rem; background: transparent; border: none; border-radius: 6px; color: var(--gray); cursor: pointer; font-weight: 500; font-size: 0.8rem; transition: all 0.2s; }
+        .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .nav-btn.active { background: var(--green); color: #000; }
+        
+        .status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--gray); }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gray); }
+        .status-dot.live { background: var(--green); box-shadow: 0 0 8px var(--green); }
+        
+        /* Mode indicator - Production Mode */
+        .mode-indicator { display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+        .mode-indicator .mode-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .mode-ready { background: rgba(107, 114, 128, 0.2); color: var(--gray); }
+        .mode-ready .mode-dot { background: var(--gray); }
+        .mode-live { background: rgba(154, 205, 50, 0.2); color: var(--green); border: 1px solid var(--green); }
+        .mode-live .mode-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
+        .mode-error { background: rgba(239, 68, 68, 0.2); color: var(--red); border: 1px solid var(--red); }
+        .mode-error .mode-dot { background: var(--red); animation: pulse 1s infinite; }
+        
+        /* Hard error display */
+        .hard-error { background: rgba(239, 68, 68, 0.1); border: 2px solid var(--red); border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+        .hard-error-title { color: var(--red); font-weight: 700; font-size: 1rem; margin: 0 0 0.5rem; }
+        .hard-error-details { font-family: monospace; font-size: 0.75rem; background: #0a0a0a; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+        .hard-error-field { display: flex; gap: 0.5rem; margin: 0.25rem 0; }
+        .hard-error-field label { color: var(--gray); min-width: 100px; }
+        .hard-error-field span { color: #fff; word-break: break-all; }
+        
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.3rem; }
+        .btn-primary { background: var(--green); color: #000; }
+        .btn-primary:hover { background: var(--green-dark); }
         .btn-secondary { background: var(--card); color: #fff; border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--card-hover); }
-        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Opportunity Table */
-        .opp-table {
-            background: var(--card); border-radius: 16px; border: 1px solid var(--border);
-            overflow: hidden;
-        }
-        .opp-table-header {
-            display: grid; grid-template-columns: 2fr 120px 100px 120px 120px 100px;
-            padding: 1rem 1.25rem; background: rgba(0,0,0,0.2);
-            font-size: 0.7rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border);
-        }
-        .opp-table-body { max-height: calc(100vh - 420px); overflow-y: auto; }
-        .opp-table-body::-webkit-scrollbar { width: 6px; }
-        .opp-table-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-        .opp-row {
-            display: grid; grid-template-columns: 2fr 120px 100px 120px 120px 100px;
-            padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.05);
-            align-items: center; cursor: pointer; transition: background 0.15s;
-        }
-        .opp-row:hover { background: rgba(255,255,255,0.03); }
-        .opp-row:last-child { border-bottom: none; }
-
-        .opp-info { display: flex; flex-direction: column; gap: 0.25rem; }
-        .opp-title { font-size: 0.9rem; font-weight: 500; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
-        .opp-title .bookmark { color: var(--orange); font-size: 0.8rem; }
-        .opp-agency { font-size: 0.75rem; color: var(--gray); }
-
-        .source-tag {
-            display: inline-block; padding: 0.3rem 0.6rem; border-radius: 6px;
-            font-size: 0.7rem; font-weight: 500; background: rgba(59, 130, 246, 0.15);
-            color: var(--blue);
-        }
-        .source-tag.sam { background: rgba(16, 185, 129, 0.15); color: var(--green); }
-        .source-tag.sbir { background: rgba(139, 92, 246, 0.15); color: var(--purple); }
-        .source-tag.state { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
-        .source-tag.dibbs { background: rgba(217, 119, 6, 0.15); color: var(--amber); }
-
-        .opp-value { font-size: 0.9rem; font-weight: 600; color: #fff; }
-
-        .match-bar { display: flex; align-items: center; gap: 0.5rem; }
-        .match-bar-bg {
-            flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;
-        }
-        .match-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-        .match-bar-fill.high { background: var(--green); }
-        .match-bar-fill.medium { background: var(--orange); }
-        .match-bar-fill.low { background: var(--gray); }
-        .match-percent { font-size: 0.8rem; font-weight: 500; min-width: 35px; }
-
-        .opp-deadline { font-size: 0.85rem; color: var(--gray-light); }
-
-        .status-pill {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500;
-        }
-        .status-pill.go { background: rgba(16, 185, 129, 0.15); color: var(--green); }
-        .status-pill.review { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
-        .status-pill.nogo { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-        .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
-        .status-pill.go .dot { background: var(--green); }
-        .status-pill.review .dot { background: var(--blue); }
-
-        /* Right Panel */
-        .right-panel { display: flex; flex-direction: column; gap: 1rem; }
-
-        /* Quick Actions */
-        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-        .action-btn {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 1.25rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 12px; cursor: pointer; transition: all 0.2s;
-        }
-        .action-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--gray); }
-        .action-btn .icon { font-size: 1.5rem; margin-bottom: 0.5rem; opacity: 0.8; }
-        .action-btn .label { font-size: 0.75rem; color: var(--gray-light); }
-
-        /* Pipeline Panel */
-        .pipeline-list { display: flex; flex-direction: column; gap: 0.5rem; }
-        .pipeline-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-        .pipeline-item .left { display: flex; align-items: center; gap: 0.5rem; }
-        .pipeline-item .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .pipeline-item.go .dot { background: var(--green); }
-        .pipeline-item.review .dot { background: var(--blue); }
-        .pipeline-item.nogo .dot { background: var(--red); }
-        .pipeline-item .name { font-size: 0.85rem; }
-        .pipeline-item .count {
-            font-size: 0.9rem; font-weight: 600;
-            padding: 0.25rem 0.6rem; border-radius: 6px;
-        }
-        .pipeline-item.go .count { background: rgba(16, 185, 129, 0.15); color: var(--green); }
-        .pipeline-item.review .count { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
-        .pipeline-item.nogo .count { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-
-        /* Revenue Target */
-        .revenue-stats { margin-bottom: 1rem; }
-        .revenue-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; }
-        .revenue-row .label { color: var(--gray); }
-        .revenue-row .value { font-weight: 600; }
-        .revenue-row .value.green { color: var(--green); }
-        .revenue-progress {
-            height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px;
-            overflow: hidden; margin-bottom: 0.75rem;
-        }
-        .revenue-progress-fill { height: 100%; background: var(--green); border-radius: 4px; }
-        .revenue-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; }
-        .revenue-footer .percent { color: var(--gray); }
-        .revenue-footer .gap {
-            padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.1); border-radius: 4px;
-        }
-
-        /* Win/Loss Record */
-        .winloss-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .winrate-badge {
-            font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 6px;
-            background: var(--green); color: #fff; font-weight: 600;
-        }
-        .winloss-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; text-align: center; }
-        .winloss-item { padding: 0.75rem; background: rgba(255,255,255,0.03); border-radius: 10px; }
-        .winloss-item .icon { font-size: 1.25rem; margin-bottom: 0.5rem; opacity: 0.7; }
-        .winloss-item .number { font-size: 1.5rem; font-weight: 700; }
-        .winloss-item .label { font-size: 0.6rem; color: var(--gray); text-transform: uppercase; margin-top: 0.25rem; }
-        .winloss-item.submitted .number { color: var(--gray-light); }
-        .winloss-item.won .number { color: var(--green); }
-        .winloss-item.lost .number { color: var(--red); }
-
-        /* Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: flex-start; justify-content: center; padding: 2rem; overflow-y: auto; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: var(--card); border-radius: 16px; max-width: 900px; width: 100%; border: 1px solid var(--border); }
-        .modal-header { padding: 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .modal-header h2 { font-size: 1.1rem; font-weight: 600; }
-        .modal-close { background: none; border: none; color: var(--gray); font-size: 1.5rem; cursor: pointer; line-height: 1; }
-        .modal-close:hover { color: #fff; }
-        .modal-body { padding: 1.25rem; max-height: 70vh; overflow-y: auto; }
-        .modal-footer { padding: 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-        .modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
-        .modal-item { background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 10px; }
-        .modal-item label { font-size: 0.65rem; color: var(--gray); display: block; text-transform: uppercase; margin-bottom: 0.3rem; letter-spacing: 0.5px; }
-        .modal-item strong { font-size: 0.9rem; }
-
-        /* Page sections */
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* Config bar */
-        .config-bar { background: rgba(16,185,129,0.05); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
-
-        /* Loading */
-        .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
-        .loading-overlay.active { display: flex; }
-        .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ========== ANIMATIONS & MICRO-INTERACTIONS ========== */
-
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Pulse glow animation */
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            50% { box-shadow: 0 0 20px 5px rgba(16, 185, 129, 0.2); }
-        }
-
-        /* Float animation for icons */
-        @keyframes float {
-            0%, 100% { transform: translateY(-50%); }
-            50% { transform: translateY(calc(-50% - 4px)); }
-        }
-
-        /* Shimmer loading effect */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        /* Scale bounce */
-        @keyframes scaleBounce {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Stat card hover effects */
-        .stat-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-        .stat-card:hover .stat-icon {
-            animation: float 2s ease-in-out infinite;
-        }
-        .stat-card:hover .stat-value {
-            color: var(--green);
-        }
-        .stat-card .stat-value {
-            transition: color 0.3s ease;
-        }
-
-        /* Navigation button effects */
-        .nav-btn {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-        .nav-btn:hover::before {
-            left: 100%;
-        }
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .nav-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
-        .nav-btn.active {
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Button hover effects */
-        .btn {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-        }
-        .btn:active {
-            transform: translateY(0) scale(0.97);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-        }
-        .btn-primary:active::after {
-            width: 200px;
-            height: 200px;
-        }
-
-        /* Table row hover effects */
-        .opp-row {
-            transition: all 0.2s ease;
-            position: relative;
-        }
-        .opp-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--green);
-            transform: scaleY(0);
-            transition: transform 0.2s ease;
-        }
-        .opp-row:hover {
-            background: rgba(16, 185, 129, 0.05);
-            transform: translateX(4px);
-        }
-        .opp-row:hover::before {
-            transform: scaleY(1);
-        }
-        .opp-row:hover .opp-title {
-            color: var(--green);
-        }
-        .opp-title {
-            transition: color 0.2s ease;
-        }
-
-        /* Match bar animation */
-        .match-bar-fill {
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .opp-row:hover .match-bar-fill {
-            filter: brightness(1.2);
-        }
-
-        /* Source tag hover */
-        .source-tag {
-            transition: all 0.2s ease;
-        }
-        .source-tag:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
-
-        /* Status pill animations */
-        .status-pill {
-            transition: all 0.2s ease;
-        }
-        .status-pill:hover {
-            transform: scale(1.05);
-        }
-        .status-pill .dot {
-            animation: pulseGlow 2s infinite;
-        }
-
-        /* Panel hover effects */
-        .panel {
-            transition: all 0.3s ease;
-        }
-        .panel:hover {
-            border-color: rgba(16, 185, 129, 0.2);
-        }
-
-        /* Action button effects */
-        .action-btn {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .action-btn:hover {
-            transform: translateY(-4px);
-            background: rgba(16, 185, 129, 0.1);
-            border-color: var(--green);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-        .action-btn:hover .icon {
-            transform: scale(1.2);
-        }
-        .action-btn .icon {
-            transition: transform 0.25s ease;
-        }
-        .action-btn:active {
-            transform: translateY(-2px) scale(0.98);
-        }
-
-        /* Pipeline item hover */
-        .pipeline-item {
-            transition: all 0.2s ease;
-        }
-        .pipeline-item:hover {
-            transform: translateX(4px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .pipeline-item .count {
-            transition: transform 0.2s ease;
-        }
-        .pipeline-item:hover .count {
-            transform: scale(1.1);
-        }
-
-        /* Source toggle animation */
-        .source-toggle {
-            transition: background 0.3s ease;
-        }
-        .source-toggle::after {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .source-toggle:hover {
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
-        }
-
-        /* Source item hover */
-        .source-item {
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin: 0 -0.5rem;
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-        .source-item:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        /* Win/loss item hover */
-        .winloss-item {
-            transition: all 0.25s ease;
-        }
-        .winloss-item:hover {
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.06);
-        }
-        .winloss-item:hover .icon {
-            transform: scale(1.2);
-        }
-        .winloss-item .icon {
-            transition: transform 0.25s ease;
-        }
-
-        /* Revenue progress animation */
-        .revenue-progress-fill {
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-        .revenue-progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-            background-size: 200% 100%;
-        }
-
-        /* Filter pill effects */
-        .filter-pill {
-            transition: all 0.2s ease;
-        }
-        .filter-pill:hover:not(.active) {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        .filter-pill.active {
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        /* Search box focus effect */
-        .search-box {
-            transition: all 0.3s ease;
-        }
-        .search-box:focus-within {
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-
-        /* Cert badge hover */
-        .cert-badge {
-            transition: all 0.2s ease;
-            cursor: default;
-        }
-        .cert-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Status badge pulse */
-        .status-badge .dot {
-            animation: pulseGlow 2s infinite;
-        }
-
-        /* Header status hover */
-        .status-badge {
-            transition: all 0.2s ease;
-        }
-        .status-badge:hover {
-            transform: scale(1.05);
-        }
-
-        /* Logo hover effect */
-        .logo-icon {
-            transition: all 0.3s ease;
-        }
-        .logo:hover .logo-icon {
-            transform: rotate(-5deg) scale(1.05);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        /* Content fade in on load */
-        .page.active {
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .main { grid-template-columns: 220px 1fr 240px; }
-            .stats-bar { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 900px) {
-            .main { grid-template-columns: 1fr; }
-            .sidebar, .right-panel { display: none; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
-            .opp-table-header, .opp-row { grid-template-columns: 1fr 100px 80px; }
-            .opp-row > *:nth-child(n+4) { display: none; }
-        }
-
-        /* Focus styles */
-        :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-
-        /* Legacy compatibility */
-        .badge { font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; }
-        .badge-live { background: var(--green); color: #fff; }
-        .opp-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: calc(100vh - 350px); overflow-y: auto; }
-        .opp-card { background: var(--card); border-radius: 12px; padding: 1rem; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
-        .opp-card:hover { background: var(--card-hover); }
-        .match-score { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--green); color: #fff; padding: 0.2rem 0.5rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; }
-        .match-score.medium { background: var(--orange); }
-        .match-score.low { background: var(--gray); }
-        .btn-go { background: var(--green); color: #fff; }
-        .btn-review { background: var(--orange); color: #fff; }
+        .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.75rem; }
+        .btn-go { background: var(--green); color: #000; }
+        .btn-review { background: var(--orange); color: #000; }
         .btn-nogo { background: var(--red); color: #fff; }
-
-        /* Eligibility banner */
-        .eligibility-banner { padding: 1rem; border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
-        .eligibility-banner.go { background: rgba(16,185,129,0.1); border: 1px solid var(--green); }
+        .btn-proposal { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #000; }
+        .btn-proposal:hover { box-shadow: 0 0 12px rgba(154, 205, 50, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .config-bar { background: rgba(154,205,50,0.03); border-bottom: 1px solid var(--border); padding: 0.6rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .config-bar label { font-size: 0.75rem; color: var(--green); font-weight: 500; }
+        .config-bar input { padding: 0.4rem 0.6rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; color: #fff; font-size: 0.8rem; }
+        .config-bar input:focus { outline: none; border-color: var(--green); }
+        
+        .stats-bar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; padding: 1rem 1.5rem; background: #0d0d0d; }
+        .stat { background: var(--card); padding: 0.75rem; border-radius: 8px; text-align: center; border: 1px solid var(--border); }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--green); }
+        .stat-label { font-size: 0.65rem; color: var(--gray); text-transform: uppercase; }
+        
+        .main { display: grid; grid-template-columns: 180px 1fr 240px; gap: 1rem; padding: 1rem 1.5rem; min-height: calc(100vh - 180px); }
+        .main-full { grid-template-columns: 1fr; max-width: 1000px; margin: 0 auto; }
+        
+        .panel { background: var(--card); border-radius: 8px; padding: 0.75rem; border: 1px solid var(--border); }
+        .panel-title { font-size: 0.7rem; color: var(--green); margin-bottom: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        
+        .sidebar { display: flex; flex-direction: column; gap: 0.75rem; }
+        .source-item { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; }
+        .badge { font-size: 0.55rem; padding: 0.15rem 0.4rem; border-radius: 3px; font-weight: 600; }
+        .badge-live { background: var(--green); color: #000; }
+        .cert-badge { display: inline-block; background: #1a1a1a; padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.6rem; margin: 0.1rem; }
+        
+        .tabs { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+        .tab { padding: 0.4rem 0.8rem; background: var(--card); border: 1px solid var(--border); border-radius: 6px; color: #aaa; cursor: pointer; font-size: 0.75rem; font-weight: 500; transition: all 0.15s; }
+        .tab:hover { background: var(--card-hover); color: #fff; }
+        .tab.active { background: var(--green); color: #000; border-color: var(--green); }
+        
+        .filter-bar { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; background: var(--card); padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); }
+        .search-input { flex: 1; min-width: 150px; padding: 0.4rem 0.75rem; background: #0a0a0a; border: 1px solid var(--border); border-radius: 4px; color: #fff; font-size: 0.8rem; }
+        .filter-pill { padding: 0.3rem 0.6rem; background: #1a1a1a; border: none; border-radius: 12px; color: #aaa; cursor: pointer; font-size: 0.7rem; }
+        .filter-pill:hover { background: #222; color: #fff; }
+        .filter-pill.active { background: var(--green); color: #000; }
+        
+        .opp-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: calc(100vh - 350px); overflow-y: auto; }
+        .opp-list::-webkit-scrollbar { width: 4px; }
+        .opp-list::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        
+        .opp-card { background: var(--card); border-radius: 8px; padding: 0.75rem; border: 1px solid var(--border); position: relative; cursor: pointer; transition: all 0.15s; }
+        .opp-card:hover { background: var(--card-hover); border-color: #333; }
+        .opp-card.qualified { border-left: 3px solid var(--green); }
+        .opp-card.not-qualified { opacity: 0.5; border-left: 3px solid var(--red); }
+        .opp-card.review { border-left: 3px solid var(--orange); }
+        .opp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; }
+        .opp-title { font-size: 0.85rem; font-weight: 600; flex: 1; margin-right: 3.5rem; line-height: 1.3; }
+        .opp-type { font-size: 0.55rem; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; font-weight: 600; }
+        .opp-type.contract { background: var(--blue); }
+        .opp-type.sbir { background: var(--purple); }
+        .opp-type.state { background: var(--orange); }
+        .opp-meta { display: flex; gap: 0.75rem; font-size: 0.65rem; color: var(--gray); margin-bottom: 0.4rem; flex-wrap: wrap; }
+        .opp-desc { font-size: 0.7rem; color: #777; margin-bottom: 0.4rem; line-height: 1.4; }
+        .opp-tags { display: flex; gap: 0.2rem; flex-wrap: wrap; }
+        .tag { font-size: 0.55rem; padding: 0.1rem 0.35rem; border-radius: 3px; background: rgba(154,205,50,0.1); color: var(--green); }
+        .tag-nq { background: rgba(239,68,68,0.1); color: #f87171; }
+        .match-score { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--green); color: #000; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem; }
+        .match-score.medium { background: var(--orange); }
+        .match-score.low { background: #333; color: #888; }
+        
+        .right-panel { display: flex; flex-direction: column; gap: 0.75rem; }
+        .alert-item { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem; background: #1a1a1a; border-radius: 4px; font-size: 0.7rem; margin-bottom: 0.3rem; cursor: pointer; }
+        .alert-item:hover { background: #222; }
+        .alert-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .alert-dot.red { background: var(--red); }
+        .alert-dot.green { background: var(--green); }
+        .alert-dot.orange { background: var(--orange); }
+        
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: flex-start; justify-content: center; padding: 2rem; overflow-y: auto; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--card); border-radius: 12px; max-width: 900px; width: 100%; border: 1px solid var(--border); }
+        .modal-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 1rem; font-weight: 600; }
+        .modal-close { background: none; border: none; color: var(--gray); font-size: 1.25rem; cursor: pointer; }
+        .modal-body { padding: 1rem; max-height: 70vh; overflow-y: auto; }
+        .modal-footer { padding: 1rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        
+        .modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .modal-item { background: #1a1a1a; padding: 0.6rem; border-radius: 6px; }
+        .modal-item label { font-size: 0.6rem; color: var(--gray); display: block; text-transform: uppercase; margin-bottom: 0.2rem; }
+        .modal-item strong { font-size: 0.85rem; }
+        
+        .eligibility-banner { padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+        .eligibility-banner.go { background: rgba(154,205,50,0.1); border: 1px solid var(--green); }
         .eligibility-banner.review { background: rgba(245,158,11,0.1); border: 1px solid var(--orange); }
         .eligibility-banner.nogo { background: rgba(239,68,68,0.1); border: 1px solid var(--red); }
-        .eligibility-banner .icon { font-size: 1.75rem; }
-        .eligibility-banner .text strong { display: block; font-size: 1.1rem; }
+        .eligibility-banner .icon { font-size: 1.5rem; }
+        .eligibility-banner .text strong { display: block; font-size: 1rem; }
         .eligibility-banner.go strong { color: var(--green); }
         .eligibility-banner.review strong { color: var(--orange); }
         .eligibility-banner.nogo strong { color: var(--red); }
-        .eligibility-banner .text p { font-size: 0.8rem; color: var(--gray); margin: 0.25rem 0 0; }
-
-        /* Form styles */
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.75rem; color: var(--gray-light); margin-bottom: 0.4rem; font-weight: 500; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-size: 0.9rem; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--green); }
-
-        /* Validation section */
-        .validation-section { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
-        .validation-section h3 { font-size: 0.9rem; color: var(--green); margin-bottom: 1rem; }
+        .eligibility-banner .text p { font-size: 0.75rem; color: var(--gray); margin: 0.2rem 0 0; }
+        
+        /* Validation Results */
+        .validation-section { background: #0d0d0d; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+        .validation-section h3 { font-size: 0.85rem; color: var(--green); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
         .check-list { display: flex; flex-direction: column; gap: 0.5rem; }
-        .check-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--card); border-radius: 10px; }
-        .check-status { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
-        .check-status.pass { background: rgba(16,185,129,0.2); color: var(--green); }
+        .check-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--card); border-radius: 6px; }
+        .check-status { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+        .check-status.pass { background: rgba(154,205,50,0.2); color: var(--green); }
         .check-status.fail { background: rgba(239,68,68,0.2); color: var(--red); }
         .check-status.warn { background: rgba(245,158,11,0.2); color: var(--orange); }
-        .check-content strong { font-size: 0.85rem; display: block; }
-        .check-content span { font-size: 0.75rem; color: var(--gray); }
-
-        /* Tabs */
-        .tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-        .tab { padding: 0.5rem 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--gray-light); cursor: pointer; font-size: 0.8rem; font-weight: 500; }
-        .tab:hover { background: var(--card-hover); color: #fff; }
-        .tab.active { background: var(--green); color: #fff; border-color: var(--green); }
-
-        /* Demo warning banner */
-        .demo-warning-banner {
-            display: flex; gap: 1rem; align-items: center; padding: 1rem;
-            background: linear-gradient(90deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1));
-            border: 1px solid var(--orange); border-radius: 12px; margin-bottom: 1rem;
+        .check-status.review { background: rgba(59,130,246,0.2); color: var(--blue); }
+        .check-content { flex: 1; }
+        .check-content strong { font-size: 0.8rem; display: block; }
+        .check-content span { font-size: 0.7rem; color: var(--gray); }
+        
+        /* Context Summary & Compliance Checklist */
+        .context-summary { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; padding: 0.75rem; margin-bottom: 1rem; font-size: 0.8rem; }
+        .context-summary strong { color: var(--blue); }
+        .compliance-checklist { background: rgba(154,205,50,0.05); border: 1px solid rgba(154,205,50,0.2); border-radius: 6px; padding: 1rem; margin-top: 1.5rem; }
+        .compliance-checklist h3 { color: var(--green); font-size: 0.9rem; margin-bottom: 0.75rem; }
+        .compliance-checklist ul { list-style: none; padding: 0; margin: 0; }
+        .compliance-checklist li { padding: 0.3rem 0; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .compliance-checklist li:last-child { border-bottom: none; }
+        .gen-info { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); text-align: center; color: var(--gray); }
+        
+        .timeline-item { display: flex; gap: 0.75rem; padding: 0.5rem 0; border-left: 2px solid var(--border); margin-left: 0.5rem; padding-left: 1rem; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -5px; top: 0.65rem; width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+        .timeline-item.critical::before { background: var(--green); }
+        .timeline-date { font-size: 0.7rem; color: var(--green); font-weight: 600; min-width: 80px; }
+        .timeline-task { font-size: 0.8rem; }
+        .timeline-days { font-size: 0.65rem; color: var(--gray); }
+        
+        .next-steps { display: flex; flex-direction: column; gap: 0.3rem; }
+        .next-step { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; padding: 0.4rem; background: var(--card); border-radius: 4px; }
+        .next-step::before { content: '→'; color: var(--green); }
+        
+        /* Page sections */
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--green); margin-bottom: 0.4rem; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.6rem; background: #1a1a1a; border: 1px solid var(--border); border-radius: 6px; color: #fff; font-size: 0.85rem; }
+        .form-group input:focus { outline: none; border-color: var(--green); }
+        .form-hint { font-size: 0.65rem; color: var(--gray); margin-top: 0.3rem; }
+        .form-hint a { color: var(--green); }
+        
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; gap: 0.75rem; }
+        .loading-overlay.active { display: flex; }
+        .spinner { width: 40px; height: 40px; border: 3px solid #333; border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        
+        /* Score breakdown tooltip */
+        .score-badge { position: relative; cursor: help; }
+        .score-tooltip { 
+            display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); 
+            background: #1a1a1a; border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem;
+            min-width: 180px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
-
-        /* Log panel */
-        .log-panel { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.5rem; font-family: monospace; font-size: 0.65rem; max-height: 80px; overflow-y: auto; }
-        .log-entry { padding: 0.15rem 0; color: var(--gray); }
+        .score-badge:hover .score-tooltip { display: block; }
+        .score-tooltip-title { font-size: 0.65rem; color: var(--green); margin-bottom: 0.3rem; font-weight: 600; }
+        .score-tooltip-row { display: flex; justify-content: space-between; font-size: 0.7rem; padding: 0.15rem 0; }
+        .score-tooltip-row span:first-child { color: var(--gray); }
+        .score-tooltip-row span:last-child { color: var(--green); font-weight: 600; }
+        
+        .log-panel { background: #0a0a0a; border-radius: 4px; padding: 0.4rem; font-family: monospace; font-size: 0.6rem; max-height: 60px; overflow-y: auto; }
+        .log-entry { padding: 0.1rem 0; color: #555; }
         .log-entry.success { color: var(--green); }
         .log-entry.error { color: var(--red); }
         .log-entry.info { color: var(--blue); }
-
-        /* Status dot animation */
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray); }
-        .status-dot.live { background: var(--green); box-shadow: 0 0 8px var(--green); }
-
-        /* Hide old elements for new design */
-        .filter-bar { display: none; }
-
+        
+        @media (max-width: 1000px) { .main { grid-template-columns: 1fr; } .sidebar, .right-panel { display: none; } .stats-bar { grid-template-columns: repeat(3, 1fr); } }
+        
         /* Quote Request Button & Modal */
         .btn-quote { background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%); color: white; }
         .btn-quote:hover { box-shadow: 0 4px 12px rgba(74,144,217,0.4); transform: translateY(-1px); }
@@ -866,48 +334,30 @@
     <header class="header">
         <div class="logo">
             <div class="logo-icon">SA</div>
-            <div>
-                <div class="logo-text"><span>SINGH</span> <span class="auto">AUTO</span></div>
-                <div class="logo-subtitle">Business Development Platform</div>
-            </div>
+            <div class="logo-text"><span>SINGH</span> AUTO</div>
         </div>
-        <div class="header-status">
-            <div class="status-badge" id="samStatus">
-                <span class="dot"></span>
-                <span>SAM</span>
+        <nav class="nav">
+            <button class="nav-btn active" data-page="scanner" data-testid="nav-scanner">📡 Scanner</button>
+            <button class="nav-btn" data-page="purchasing" data-testid="nav-purchasing">🛒 Purchasing</button>
+            <button class="nav-btn" data-page="subcontracting" data-testid="nav-subcontracting">🎯 Subcontracting</button>
+            <button class="nav-btn" data-page="pipeline" data-testid="nav-pipeline">📊 Pipeline</button>
+            <button class="nav-btn" data-page="agent" data-testid="nav-agent">🤖 Agent_SAM</button>
+            <button class="nav-btn" data-page="train" data-testid="nav-train">🧠 Train Agent</button>
+        </nav>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div id="modeIndicator" class="mode-indicator mode-ready" title="Production Mode">
+                <span class="mode-dot"></span>
+                <span class="mode-text">PRODUCTION</span>
             </div>
-            <div class="status-badge claude" id="claudeStatus">
-                <span class="dot"></span>
-                <span>Claude</span>
-            </div>
+            <div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">Ready</span></div>
+            <button class="btn btn-primary btn-sm" onclick="scanAll()" data-testid="btn-scan-live">🔄 Scan Live Data</button>
         </div>
     </header>
-
-    <nav class="nav">
-        <button class="nav-btn active" data-page="scanner" data-testid="nav-scanner" title="Search and discover government contracting opportunities">
-            <span class="icon">📡</span> Scanner
-        </button>
-        <button class="nav-btn" data-page="purchasing" data-testid="nav-purchasing" title="Check eligibility for GSA, VA, and DIBBS programs">
-            <span class="icon">🛒</span> Purchasing
-        </button>
-        <button class="nav-btn" data-page="subcontracting" data-testid="nav-subcontracting" title="Find subcontracting opportunities with prime contractors">
-            <span class="icon">🎯</span> Subcontracting
-        </button>
-        <button class="nav-btn" data-page="pipeline" data-testid="nav-pipeline" title="Track opportunities through your bid pipeline">
-            <span class="icon">📊</span> Pipeline
-        </button>
-        <button class="nav-btn" data-page="agent" data-testid="nav-agent" title="AI assistant for proposal writing and opportunity analysis">
-            <span class="icon">🤖</span> Agent_SAM
-        </button>
-        <button class="nav-btn" data-page="train" data-testid="nav-train" title="Train the AI agent with your company's past performance and win themes">
-            <span class="icon">🧠</span> Train Agent
-        </button>
-    </nav>
 
     <div class="config-bar" id="configBar">
         <div id="authStatus" style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="color: var(--red); font-size: 0.75rem;">⚠️ Backend authentication required</span>
-            <button class="btn btn-sm btn-primary" onclick="checkBackendAuth()" title="Verify connection to the backend API server">🔌 Check Connection</button>
+            <button class="btn btn-sm btn-primary" onclick="checkBackendAuth()">🔌 Check Connection</button>
         </div>
         <input type="hidden" id="apiUrl" value="https://singh-automation.vercel.app/api/sam">
     </div>
@@ -915,353 +365,128 @@
     <!-- SCANNER PAGE -->
     <div class="page active" id="page-scanner">
         <div class="stats-bar">
-            <div class="stat-card live" data-testid="stat-live" title="Opportunities currently accepting responses from live API sources">
-                <div class="stat-label">Live</div>
-                <div class="stat-value" id="statLive">0</div>
-                <div class="stat-icon">📡</div>
-            </div>
-            <div class="stat-card total" data-testid="stat-total" title="Total opportunities scanned across all sources">
-                <div class="stat-label">Total</div>
-                <div class="stat-value" id="statTotal">0</div>
-                <div class="stat-icon">📋</div>
-            </div>
-            <div class="stat-card qualified" data-testid="stat-qualified" title="Opportunities matching Singh's NAICS codes, certifications, and keywords">
-                <div class="stat-label">Qualified</div>
-                <div class="stat-value" id="statQualified">0</div>
-                <div class="stat-icon">🎯</div>
-            </div>
-            <div class="stat-card urgent" data-testid="stat-urgent" title="Opportunities closing within 14 days - requires immediate action">
-                <div class="stat-label">Urgent</div>
-                <div class="stat-value" id="statUrgent">0</div>
-                <div class="stat-icon">⚠️</div>
-            </div>
-            <div class="stat-card value" data-testid="stat-value" title="Combined estimated value of all scanned opportunities">
-                <div class="stat-label">Value</div>
-                <div class="stat-value" id="statValue">$0</div>
-                <div class="stat-icon">💰</div>
-            </div>
-            <div class="stat-card match" data-testid="stat-match" title="Average match score across all opportunities">
-                <div class="stat-label">Avg Match</div>
-                <div class="stat-value" id="statMatch">0%</div>
-                <div class="stat-icon">📊</div>
-            </div>
+            <div class="stat" data-testid="stat-live"><div class="stat-value" id="statLive">0</div><div class="stat-label">Live</div></div>
+            <div class="stat" data-testid="stat-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+            <div class="stat" data-testid="stat-qualified"><div class="stat-value" id="statQualified">0</div><div class="stat-label">Qualified</div></div>
+            <div class="stat" data-testid="stat-urgent"><div class="stat-value" id="statUrgent">0</div><div class="stat-label">Urgent</div></div>
+            <div class="stat" data-testid="stat-value"><div class="stat-value" id="statValue">$0</div><div class="stat-label">Value</div></div>
+            <div class="stat" data-testid="stat-match"><div class="stat-value" id="statMatch">0%</div><div class="stat-label">Avg Match</div></div>
         </div>
         
         <div class="main">
             <div class="sidebar">
                 <div class="panel">
-                    <div class="panel-header">
-                        <span class="icon">🏛️</span>
-                        <span class="panel-title">Sources</span>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🏛️</div>
-                            <span class="source-name">SAM.gov</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="sam"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🔬</div>
-                            <span class="source-name">SBIR/STTR</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="sbir"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">💰</div>
-                            <span class="source-name">Grants.gov</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="grants"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🎖️</div>
-                            <span class="source-name">DIBBS</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="dibbs"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🌴</div>
-                            <span class="source-name">CA eProcure</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="ca"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🌲</div>
-                            <span class="source-name">MI SIGMA</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="mi"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">🤠</div>
-                            <span class="source-name">TX SmartBuy</span>
-                            <span class="source-badge live">LIVE</span>
-                        </div>
-                        <div class="source-toggle active" data-source="tx"></div>
-                    </div>
-                    <div class="source-item">
-                        <div class="source-info">
-                            <div class="source-icon">📈</div>
-                            <span class="source-name">Forecasts</span>
-                            <span class="source-badge beta">BETA</span>
-                        </div>
-                        <div class="source-toggle active" data-source="forecasts"></div>
-                    </div>
+                    <div class="panel-title">🏛️ Sources</div>
+                    <div class="source-item"><span>SAM.gov</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>SBIR/STTR</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>Grants.gov</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>DIBBS</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>CA eProcure</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>MI SIGMA</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>TX SmartBuy</span><span class="badge badge-live">LIVE</span></div>
+                    <div class="source-item"><span>Forecasts</span><span class="badge" style="background: #555;">BETA</span></div>
                 </div>
                 <div class="panel">
-                    <div class="panel-header">
-                        <span class="icon">🏆</span>
-                        <span class="panel-title">Certifications</span>
-                    </div>
-                    <div class="cert-grid">
-                        <span class="cert-badge">FANUC ASI</span>
-                        <span class="cert-badge">UR CSP</span>
-                        <span class="cert-badge orange">MBE</span>
-                        <span class="cert-badge orange">WBENC</span>
-                    </div>
+                    <div class="panel-title">📧 Email Alerts</div>
+                    <input type="email" id="alertEmail" placeholder="your@email.com" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; background: var(--darker); border: 1px solid var(--border); border-radius: 4px; color: var(--light);">
+                    <select id="alertFreq" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; background: var(--darker); border: 1px solid var(--border); border-radius: 4px; color: var(--light);">
+                        <option value="daily">Daily Digest</option>
+                        <option value="weekly">Weekly Summary</option>
+                        <option value="instant">Instant (New Opps)</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm" onclick="subscribeAlerts()" style="width: 100%;">🔔 Subscribe</button>
+                    <button class="btn btn-sm btn-secondary" onclick="testDigest()" style="width: 100%; margin-top: 0.5rem;">📬 Test Digest Now</button>
+                    <div id="digestStatus" style="font-size: 0.7rem; color: var(--gray); margin-top: 0.5rem;"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title">🏆 Certs</div>
+                    <span class="cert-badge">FANUC ASI</span>
+                    <span class="cert-badge">UR CSP</span>
+                    <span class="cert-badge">MBE</span>
+                    <span class="cert-badge">WBENC</span>
                 </div>
             </div>
             
-            <div class="content">
-                <!-- Content Header with Search and Filters -->
-                <div class="content-header">
-                    <div class="search-box">
-                        <span>🔍</span>
-                        <input type="text" placeholder="Search opportunities..." id="searchInput" title="Search by title, agency, solicitation number, or NAICS code">
-                    </div>
-                    <div class="filter-pills">
-                        <button class="filter-pill active" data-filter="all" title="Show all opportunity types">All</button>
-                        <button class="filter-pill" data-filter="contract" data-testid="filter-federal" title="Federal contract opportunities from SAM.gov">Federal</button>
-                        <button class="filter-pill" data-filter="sbir" data-testid="filter-sbir" title="Small Business Innovation Research & STTR opportunities">SBIR</button>
-                        <button class="filter-pill" data-filter="grant" data-testid="filter-grants" title="Federal grant opportunities from Grants.gov">Grants</button>
-                        <button class="filter-pill" data-filter="state" data-testid="filter-state" title="State government opportunities (CA, MI, TX)">State</button>
-                        <button class="filter-pill" data-filter="dibbs" title="Defense Logistics Agency Internet Bid Board System">DIBBS</button>
-                        <button class="filter-pill" data-filter="forecast" title="Planned future procurement forecasts">Forecast</button>
-                    </div>
-                    <button class="btn btn-primary" onclick="scanAll()" data-testid="btn-scan-live" title="Fetch live opportunities from SAM.gov, SBIR, Grants.gov and other sources">
-                        📡 Scan Live Data
-                    </button>
+            <div class="content" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div class="tabs" id="tabsContainer"></div>
+                <div class="filter-bar">
+                    <input type="text" class="search-input" placeholder="🔍 Search..." id="searchInput">
+                    <button class="filter-pill active" data-filter="all">All</button>
+                    <button class="filter-pill" data-filter="contract" data-testid="filter-federal">Federal</button>
+                    <button class="filter-pill" data-filter="sbir" data-testid="filter-sbir">SBIR</button>
+                    <button class="filter-pill" data-filter="grant" data-testid="filter-grants">Grants</button>
+                    <button class="filter-pill" data-filter="state" data-testid="filter-state">State</button>
+                    <button class="filter-pill" data-filter="dibbs">DIBBS</button>
+                    <button class="filter-pill" data-filter="forecast">Forecast</button>
                 </div>
-
-                <!-- Opportunity Table -->
-                <div class="opp-table">
-                    <div class="opp-table-header">
-                        <div>Opportunity</div>
-                        <div>Source</div>
-                        <div>Value</div>
-                        <div>Match</div>
-                        <div>Deadline</div>
-                        <div>Status</div>
-                    </div>
-                    <div class="opp-table-body" id="oppList" data-testid="opp-list">
-                        <div style="text-align: center; padding: 3rem; color: var(--gray);">
-                            <div style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;">📡</div>
-                            <h3 style="margin: 0 0 0.5rem; font-weight: 500;">Ready to Scan</h3>
-                            <p style="font-size: 0.85rem; opacity: 0.7;">Click "Scan Live Data" to fetch opportunities</p>
-                        </div>
+                <div class="opp-list" id="oppList" data-testid="opp-list">
+                    <div style="text-align: center; padding: 2rem; color: var(--gray);">
+                        <div style="font-size: 2rem; opacity: 0.4;">📡</div>
+                        <h3 style="margin: 0.5rem 0;">Ready to Scan</h3>
+                        <p style="font-size: 0.8rem;">Click Scan to load opportunities</p>
                     </div>
                 </div>
                 <div class="log-panel" id="logPanel"></div>
             </div>
             
             <div class="right-panel">
-                <!-- Quick Actions -->
                 <div class="panel">
-                    <div class="panel-header">
-                        <span class="icon">⚡</span>
-                        <span class="panel-title">Quick Actions</span>
-                    </div>
-                    <div class="quick-actions">
-                        <div class="action-btn" onclick="openNewProposal()">
-                            <span class="icon">📄</span>
-                            <span class="label">New Proposal</span>
-                        </div>
-                        <div class="action-btn" onclick="openFindPartners()">
-                            <span class="icon">🤝</span>
-                            <span class="label">Find Partners</span>
-                        </div>
-                        <div class="action-btn" onclick="openOutcomeModal()">
-                            <span class="icon">🏆</span>
-                            <span class="label">Record Win</span>
-                        </div>
-                        <div class="action-btn" onclick="openLessonsLearned()">
-                            <span class="icon">📚</span>
-                            <span class="label">Add Lesson</span>
-                        </div>
-                    </div>
-                    <div id="qualifiedList" style="display: none;"></div>
+                    <div class="panel-title">⚡ Quick Actions</div>
+                    <div id="qualifiedList"></div>
                 </div>
-
-                <!-- Pipeline -->
                 <div class="panel">
-                    <div class="panel-header">
-                        <span class="icon">📊</span>
-                        <span class="panel-title">Pipeline</span>
-                    </div>
-                    <div class="pipeline-list">
-                        <div class="pipeline-item go">
-                            <div class="left">
-                                <span class="dot"></span>
-                                <span class="name">GO</span>
-                            </div>
-                            <span class="count" id="pipelineGo">0</span>
-                        </div>
-                        <div class="pipeline-item review">
-                            <div class="left">
-                                <span class="dot"></span>
-                                <span class="name">Review</span>
-                            </div>
-                            <span class="count" id="pipelineReview">0</span>
-                        </div>
-                        <div class="pipeline-item nogo">
-                            <div class="left">
-                                <span class="dot"></span>
-                                <span class="name">No-Go</span>
-                            </div>
-                            <span class="count" id="pipelineNoGo">0</span>
+                    <div class="panel-title">📋 Pipeline</div>
+                    <div id="pipelineSummary">
+                        <div style="font-size: 0.75rem; color: var(--gray);">
+                            <div>🟢 GO: <span id="pipelineGo">0</span></div>
+                            <div>🟡 Review: <span id="pipelineReview">0</span></div>
+                            <div>🔴 No-Go: <span id="pipelineNoGo">0</span></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Revenue Target -->
                 <div class="panel">
-                    <div class="panel-header">
-                        <span class="icon">📈</span>
-                        <span class="panel-title">Revenue Target</span>
+                    <div class="panel-title">🎯 Revenue Target</div>
+                    <div style="font-size: 0.7rem; margin-bottom: 0.5rem;">
+                        <label style="color: var(--gray);">Annual Goal</label>
+                        <input type="text" id="revenueGoal" value="500000" style="width: 100%; padding: 0.3rem; background: #0a0a0a; border: 1px solid var(--border); border-radius: 4px; color: #fff; font-size: 0.75rem;" onchange="updateRevenueCalculator()">
                     </div>
-                    <div class="revenue-stats">
-                        <div class="revenue-row">
-                            <span class="label">Pipeline Needed</span>
-                            <span class="value" id="pipelineNeeded">$2.0M</span>
+                    <div style="font-size: 0.7rem; margin-bottom: 0.5rem;">
+                        <label style="color: var(--gray);">Win Rate (%)</label>
+                        <input type="number" id="winRate" value="25" min="1" max="100" style="width: 100%; padding: 0.3rem; background: #0a0a0a; border: 1px solid var(--border); border-radius: 4px; color: #fff; font-size: 0.75rem;" onchange="updateRevenueCalculator()">
+                    </div>
+                    <div id="revenueCalcResult" style="background: #0a0a0a; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem;">
+                        <div style="font-size: 0.65rem; color: var(--gray);">Pipeline Needed:</div>
+                        <div id="pipelineNeeded" style="font-size: 1rem; font-weight: 700; color: var(--green);">$2M</div>
+                        <div style="font-size: 0.65rem; color: var(--gray); margin-top: 0.3rem;">Current GO Pipeline:</div>
+                        <div id="currentPipeline" style="font-size: 0.9rem; font-weight: 600; color: #fff;">$0</div>
+                        <div style="font-size: 0.65rem; margin-top: 0.3rem;" id="pipelineGapMsg">
+                            <span style="color: var(--red);">Gap: $2M needed</span>
                         </div>
-                        <div class="revenue-row">
-                            <span class="label">Current GO</span>
-                            <span class="value green" id="currentPipeline">$0</span>
-                        </div>
                     </div>
-                    <div class="revenue-progress">
-                        <div class="revenue-progress-fill" id="revenueProgressBar" style="width: 0%;"></div>
-                    </div>
-                    <div class="revenue-footer">
-                        <span class="percent" id="revenuePercent">0% of target</span>
-                        <span class="gap" id="pipelineGapMsg">Gap: $2.0M</span>
-                    </div>
-                    <input type="hidden" id="revenueGoal" value="500000">
-                    <input type="hidden" id="winRate" value="25">
                 </div>
-
-                <!-- Win/Loss Record -->
                 <div class="panel">
-                    <div class="winloss-header">
-                        <div class="panel-header" style="margin-bottom: 0;">
-                            <span class="icon">🏆</span>
-                            <span class="panel-title">Win/Loss Record</span>
+                    <div class="panel-title">📈 Win/Loss Record</div>
+                    <div id="winLossStats" style="font-size: 0.7rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: var(--gray);">Submitted:</span>
+                            <span id="outcomeSubmitted">0</span>
                         </div>
-                        <span class="winrate-badge" id="winRateBadge">0% Win Rate</span>
-                    </div>
-                    <div class="winloss-grid">
-                        <div class="winloss-item submitted">
-                            <div class="icon">📤</div>
-                            <div class="number" id="outcomeSubmitted">0</div>
-                            <div class="label">Submitted</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: var(--green);">Won:</span>
+                            <span id="outcomeWon" style="color: var(--green);">0</span>
                         </div>
-                        <div class="winloss-item won">
-                            <div class="icon">🏆</div>
-                            <div class="number" id="outcomeWon">0</div>
-                            <div class="label">Won</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: var(--red);">Lost:</span>
+                            <span id="outcomeLost" style="color: var(--red);">0</span>
                         </div>
-                        <div class="winloss-item lost">
-                            <div class="icon">❌</div>
-                            <div class="number" id="outcomeLost">0</div>
-                            <div class="label">Lost</div>
+                        <div style="display: flex; justify-content: space-between; padding-top: 0.3rem; border-top: 1px solid var(--border);">
+                            <span style="color: var(--gray);">Actual Win Rate:</span>
+                            <span id="actualWinRate" style="color: var(--green); font-weight: 600;">--</span>
                         </div>
                     </div>
-                    <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 1rem;" onclick="openOutcomeModal()">
+                    <button class="btn btn-sm btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="openOutcomeModal()">
                         📝 Record Outcome
                     </button>
-                    <span id="actualWinRate" style="display: none;"></span>
-                </div>
-
-                <!-- INFO/ABOUT PANEL -->
-                <div class="panel">
-                    <div class="panel-title">ℹ️ About This Platform</div>
-                    <div style="font-size: 0.7rem; color: var(--gray); line-height: 1.5;">
-                        <div style="margin-bottom: 0.5rem;">
-                            <strong style="color: #fff;">Singh Automation GovCon Scanner</strong>
-                            <span style="color: var(--green); font-size: 0.6rem; margin-left: 0.3rem;">v2.0</span>
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            AI-powered government contracting opportunity discovery and proposal assistance for Singh Automation LLC.
-                        </div>
-                        <div style="padding: 0.4rem; background: rgba(154,205,50,0.1); border-radius: 4px; margin-bottom: 0.5rem;">
-                            <div style="font-size: 0.65rem; color: var(--green); margin-bottom: 0.2rem;">🔒 Security</div>
-                            <div style="font-size: 0.6rem;">API keys server-side only. CORS-protected. No data stored externally.</div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.6rem;">
-                            <span style="background: var(--dark); padding: 0.2rem 0.4rem; border-radius: 3px;">CAGE: 86VF7</span>
-                            <span style="background: var(--dark); padding: 0.2rem 0.4rem; border-radius: 3px;">UEI: GJ1DPYQ3X8K5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- QUICK HELP GUIDE -->
-                <div class="panel">
-                    <div class="panel-title">❓ Quick Help</div>
-                    <div style="font-size: 0.65rem; color: var(--gray); line-height: 1.6;">
-                        <div style="margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);">
-                            <strong style="color: var(--green);">1. Scan for Opportunities</strong>
-                            <div>Click "Scan Live Data" to fetch real opportunities from SAM.gov and other sources.</div>
-                        </div>
-                        <div style="margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);">
-                            <strong style="color: var(--green);">2. Review & Validate</strong>
-                            <div>Click any opportunity to see details. Use "Validate with AI" for eligibility check.</div>
-                        </div>
-                        <div style="margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);">
-                            <strong style="color: var(--green);">3. Make GO/No-GO Decision</strong>
-                            <div>Mark qualified opportunities as GO to add them to your pipeline.</div>
-                        </div>
-                        <div style="margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);">
-                            <strong style="color: var(--green);">4. Generate Proposals</strong>
-                            <div>Use the Agent tab to get AI help drafting proposals and responses.</div>
-                        </div>
-                        <div>
-                            <strong style="color: var(--green);">5. Track Outcomes</strong>
-                            <div>Record wins/losses to improve your strategy over time.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DATA PROVENANCE -->
-                <div class="panel">
-                    <div class="panel-title">📊 Data Provenance</div>
-                    <div style="font-size: 0.65rem; color: var(--gray); line-height: 1.5;">
-                        <div style="margin-bottom: 0.5rem;">
-                            <strong style="color: #fff;">Live API Sources:</strong>
-                            <div style="margin-top: 0.2rem;">• <strong>SAM.gov</strong> - Official federal procurement database</div>
-                            <div>• <strong>SBIR.gov</strong> - Small Business Innovation Research</div>
-                            <div>• <strong>Grants.gov</strong> - Federal grant opportunities</div>
-                        </div>
-                        <div style="margin-bottom: 0.5rem;">
-                            <strong style="color: #fff;">Portal Links:</strong>
-                            <div style="margin-top: 0.2rem;">• State procurement portals (CA, MI, TX)</div>
-                            <div>• DIBBS (Defense Logistics Agency)</div>
-                        </div>
-                        <div style="background: rgba(245,158,11,0.1); padding: 0.4rem; border-radius: 4px;">
-                            <div style="color: var(--orange); font-size: 0.6rem;">⚠️ Data Accuracy</div>
-                            <div style="font-size: 0.6rem; margin-top: 0.2rem;">Always verify opportunity details on official government portals before submitting proposals.</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1343,14 +568,6 @@
     <!-- SUBCONTRACTING PAGE -->
     <div class="page" id="page-subcontracting">
         <div class="main main-full" style="max-width: 1200px;">
-            <!-- Demo Data Warning Banner - shown when using demo data -->
-            <div id="subDemoBanner" class="demo-warning-banner" style="background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(239,68,68,0.1)); border: 2px solid var(--orange); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
-                <span style="font-size: 1.5rem;">⚠️</span>
-                <div>
-                    <strong style="color: var(--orange);">DEMONSTRATION DATA</strong>
-                    <p style="font-size: 0.75rem; color: var(--gray); margin: 0.25rem 0 0 0;">The data shown below is for demonstration purposes only. These are not live subcontracting opportunities. Contact primes directly to verify current needs.</p>
-                </div>
-            </div>
             <div class="panel">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <div class="panel-title" style="margin-bottom: 0;">🎯 Subcontracting Opportunities</div>
@@ -1468,12 +685,11 @@
                 <!-- Input Area -->
                 <div style="border-top: 1px solid var(--border); padding-top: 0.75rem;">
                     <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="agentInput" placeholder="Ask Agent_SAM anything..."
+                        <input type="text" id="agentInput" placeholder="Ask Agent_SAM anything..." 
                                style="flex: 1; padding: 0.75rem 1rem; background: #0a0a0a; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.85rem;"
                                onkeypress="if(event.key==='Enter')sendToAgent()"
-                               data-testid="agent-input"
-                               title="Ask about opportunity analysis, proposal sections, win themes, or compliance requirements">
-                        <button class="btn btn-primary" onclick="sendToAgent()" id="agentSendBtn" style="padding: 0.75rem 1.25rem;" data-testid="agent-send-btn" title="Send your question to Agent_SAM">
+                               data-testid="agent-input">
+                        <button class="btn btn-primary" onclick="sendToAgent()" id="agentSendBtn" style="padding: 0.75rem 1.25rem;" data-testid="agent-send-btn">
                             Send →
                         </button>
                     </div>
@@ -1485,14 +701,14 @@
                 <div style="display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
                     <div style="font-weight: 700; font-size: 1rem;">📝 Proposal Generator</div>
                     <div style="margin-left: auto; display: flex; gap: 0.5rem;">
-                        <button class="btn btn-primary btn-sm" onclick="generateProposalInAgent()" id="agentGenerateBtn" title="Generate a complete proposal using AI based on the selected opportunity">
+                        <button class="btn btn-primary btn-sm" onclick="generateProposalInAgent()" id="agentGenerateBtn">
                             🚀 Generate
                         </button>
-                        <button class="btn btn-sm" style="background: linear-gradient(135deg, #1B4F72, #2E86AB); color: #fff;" onclick="downloadProposalFromAgent()" id="agentDownloadBtn" title="Download proposal as formatted Word document (.docx)">
+                        <button class="btn btn-sm" style="background: linear-gradient(135deg, #1B4F72, #2E86AB); color: #fff;" onclick="downloadProposalFromAgent()" id="agentDownloadBtn">
                             📄 .docx
                         </button>
-                        <button class="btn btn-secondary btn-sm" onclick="copyProposal()" title="Copy proposal text to clipboard">📋</button>
-                        <button class="btn btn-secondary btn-sm" onclick="downloadProposalTxt()" title="Download proposal as plain text file">txt</button>
+                        <button class="btn btn-secondary btn-sm" onclick="copyProposal()">📋</button>
+                        <button class="btn btn-secondary btn-sm" onclick="downloadProposalTxt()">txt</button>
                     </div>
                 </div>
                 
@@ -1654,10 +870,10 @@
                         </div>
                     </div>
                     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                        <button class="btn btn-sm btn-secondary" style="flex: 1;" onclick="exportAgentMemory()" title="Export all training data as JSON backup">📤 Export Memory</button>
-                        <button class="btn btn-sm btn-secondary" style="flex: 1;" onclick="document.getElementById('importMemory').click()" title="Import previously exported training data">📥 Import Memory</button>
+                        <button class="btn btn-sm btn-secondary" style="flex: 1;" onclick="exportAgentMemory()">📤 Export Memory</button>
+                        <button class="btn btn-sm btn-secondary" style="flex: 1;" onclick="document.getElementById('importMemory').click()">📥 Import Memory</button>
                         <input type="file" id="importMemory" style="display: none;" accept=".json" onchange="importAgentMemory(event)">
-                        <button class="btn btn-sm" style="background: var(--red); color: #fff;" onclick="clearAgentMemory()" title="Delete all training data (cannot be undone)">🗑️ Clear</button>
+                        <button class="btn btn-sm" style="background: var(--red); color: #fff;" onclick="clearAgentMemory()">🗑️ Clear</button>
                     </div>
                 </div>
                 
@@ -1787,19 +1003,22 @@ function showHardError(component, endpoint, status, message, requestId = null) {
 
 function setModeIndicator(mode, text) {
     const indicator = document.getElementById('modeIndicator');
+    if (!indicator) return;
     indicator.className = 'mode-indicator mode-' + mode;
-    indicator.querySelector('.mode-text').textContent = text;
+    const modeText = indicator.querySelector('.mode-text');
+    if (modeText) modeText.textContent = text;
 }
 
 async function checkBackendAuth() {
     const authStatus = document.getElementById('authStatus');
-    
+    if (!authStatus) return;
+
     try {
-        const r = await fetch(BACKEND_BASE + '/api/health', { 
+        const r = await fetch(BACKEND_BASE + '/api/health', {
             method: 'GET',
             signal: AbortSignal.timeout(10000)
         });
-        
+
         if (r.ok) {
             const data = await r.json();
             authStatus.innerHTML = `
@@ -1831,18 +1050,24 @@ function log(msg, type = 'info') {
     p.scrollTop = p.scrollHeight;
 }
 
-function showLoading(t, showActions = true) { 
-    document.getElementById('loadingText').textContent = t; 
-    document.getElementById('loadingOverlay').classList.add('active');
-    document.getElementById('loadingActions').style.display = showActions ? 'flex' : 'none';
-    document.getElementById('loadingProgress').textContent = '';
+function showLoading(t, showActions = true) {
+    const loadingText = document.getElementById('loadingText');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingActions = document.getElementById('loadingActions');
+    const loadingProgress = document.getElementById('loadingProgress');
+    if (loadingText) loadingText.textContent = t;
+    if (loadingOverlay) loadingOverlay.classList.add('active');
+    if (loadingActions) loadingActions.style.display = showActions ? 'flex' : 'none';
+    if (loadingProgress) loadingProgress.textContent = '';
 }
-function hideLoading() { 
-    document.getElementById('loadingOverlay').classList.remove('active'); 
+function hideLoading() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) loadingOverlay.classList.remove('active');
     scanningInBackground = false;
 }
 function updateLoadingProgress(text) {
-    document.getElementById('loadingProgress').textContent = text;
+    const loadingProgress = document.getElementById('loadingProgress');
+    if (loadingProgress) loadingProgress.textContent = text;
 }
 function cancelScan() {
     if (scanController) {
@@ -1855,8 +1080,10 @@ function cancelScan() {
     }
     hideLoading();
     // Reset status indicator
-    document.getElementById('statusText').textContent = 'Ready';
-    document.getElementById('statusDot').style.animation = '';
+    const statusText = document.getElementById('statusText');
+    const statusDot = document.getElementById('statusDot');
+    if (statusText) statusText.textContent = 'Ready';
+    if (statusDot) statusDot.style.animation = '';
     log('Operation cancelled', 'info');
 }
 function runInBackground() {
@@ -1864,8 +1091,10 @@ function runInBackground() {
     hideLoading();
     log('Scan running in background...', 'info');
     // Show subtle indicator in header
-    document.getElementById('statusText').textContent = 'Scanning...';
-    document.getElementById('statusDot').style.animation = 'pulse 1s infinite';
+    const statusText = document.getElementById('statusText');
+    const statusDot = document.getElementById('statusDot');
+    if (statusText) statusText.textContent = 'Scanning...';
+    if (statusDot) statusDot.style.animation = 'pulse 1s infinite';
 }
 
 // ========== API ==========
@@ -1924,10 +1153,6 @@ async function scanAll() {
             
             processOpportunities(d.opportunities, 'Live');
             setModeIndicator('live', 'LIVE DATA');
-            // Update data freshness timestamp
-            const scanTime = new Date();
-            const el = document.getElementById('lastScanTime');
-            if (el) el.textContent = scanTime.toLocaleTimeString() + ' (' + scanTime.toLocaleDateString() + ')';
             hideLoading();
             return; // Success - exit function
             
@@ -2020,9 +1245,13 @@ function processOpportunities(rawOpps, source) {
     trackSeenOpportunities(rawOpps);
     
     // Update status indicators
-    document.getElementById('statusDot').className = 'status-dot live';
-    document.getElementById('statusDot').style.animation = '';
-    document.getElementById('statusText').textContent = source;
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    if (statusDot) {
+        statusDot.className = 'status-dot live';
+        statusDot.style.animation = '';
+    }
+    if (statusText) statusText.textContent = source;
     
     // PRODUCTION: Always live mode
     setModeIndicator('live', 'LIVE DATA');
@@ -2322,9 +1551,9 @@ function trackSeenOpportunities(opps) {
 }
 
 function fmtCurrency(v) {
-    if (!v) return '—'; // Changed from TBD - clearer for gov buyers
+    if (!v) return 'TBD';
     const n = parseFloat(v);
-    if (isNaN(n)) return '—';
+    if (isNaN(n)) return 'TBD';
     return n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(0) + 'K' : '$' + n.toLocaleString();
 }
 
@@ -2354,12 +1583,15 @@ function renderTabs() {
     if (c.forecast > 0) tabs += `<button class="tab ${currentTab==='forecast'?'active':''}" data-tab="forecast">Forecast ${c.forecast}</button>`;
     tabs += `<button class="tab ${currentTab==='qualified'?'active':''}" data-tab="qualified">✅ Qualified ${c.qualified}</button>`;
     
-    document.getElementById('tabsContainer').innerHTML = tabs;
+    const tabsContainer = document.getElementById('tabsContainer');
+    if (tabsContainer) tabsContainer.innerHTML = tabs;
 }
 
 function renderOpps() {
     const c = document.getElementById('oppList');
-    const s = (document.getElementById('searchInput').value || '').toLowerCase();
+    if (!c) return;
+    const searchInput = document.getElementById('searchInput');
+    const s = (searchInput?.value || '').toLowerCase();
     
     let f = opportunities.filter(o => {
         // Tab filtering
@@ -2393,62 +1625,66 @@ function renderOpps() {
     
     c.innerHTML = f.map(o => {
         const d = daysUntil(o.closeDate);
-        const matchClass = o.matchScore >= 70 ? 'high' : o.matchScore >= 50 ? 'medium' : 'low';
+        const sc = o.matchScore >= 70 ? '' : o.matchScore >= 50 ? 'medium' : 'low';
         const status = pipeline[o.id]?.status || null;
-
+        const typeBadge = getTypeBadgeColor(o.type);
+        
         // CANONICAL: Use ONLY o.eligibility (single source of truth)
         const eligStatus = o.eligibility.status; // GO, REVIEW, or NO-GO
-
-        // Determine source tag class
-        let sourceClass = '';
-        if (o.type === 'contract') sourceClass = 'sam';
-        else if (o.type === 'sbir') sourceClass = 'sbir';
-        else if (o.type === 'state') sourceClass = 'state';
-        else if (o.type === 'dibbs') sourceClass = 'dibbs';
-
-        // Determine status pill
-        let statusPill = '';
-        if (status === 'go' || eligStatus === 'GO') {
-            statusPill = '<span class="status-pill go"><span class="dot"></span>Go</span>';
-        } else if (status === 'review' || eligStatus === 'REVIEW') {
-            statusPill = '<span class="status-pill review"><span class="dot"></span>Review</span>';
-        } else if (status === 'nogo' || eligStatus === 'NO-GO') {
-            statusPill = '<span class="status-pill nogo">No-Go</span>';
-        } else {
-            statusPill = '<span style="color: var(--gray);">—</span>';
-        }
-
-        // Source name for display
-        const sourceName = o.source || (o.type === 'contract' ? 'SAM.gov' : o.type === 'sbir' ? 'SBIR/STTR' : o.type === 'state' ? 'State' : o.type);
-
-        return `<div class="opp-row" data-id="${o.id}" data-testid="opp-card">
-            <div class="opp-info">
-                <div class="opp-title" data-testid="opp-title">
-                    ${eligStatus === 'GO' ? '<span class="bookmark">📌</span>' : ''}
-                    ${(o.title || 'Untitled').substring(0, 50)}${o.title && o.title.length > 50 ? '...' : ''}
+        
+        // Determine card border based on canonical eligibility
+        let cardClass = 'opp-card';
+        if (eligStatus === 'GO') cardClass += ' qualified';
+        else if (eligStatus === 'NO-GO') cardClass += ' not-qualified';
+        else cardClass += ' review';
+        
+        return `<div class="${cardClass}" data-id="${o.id}" data-testid="opp-card">
+            <div class="opp-header">
+                <div class="opp-title" data-testid="opp-title">${o.title}</div>
+                <span class="opp-type" style="background: ${typeBadge.bg}; color: ${typeBadge.color}" data-testid="opp-type">${(o.category || o.type || 'contract').toUpperCase()}</span>
+            </div>
+            <div class="opp-meta" data-testid="opp-meta">
+                <span data-testid="opp-agency">🏛️ ${(o.agency||'Agency').substring(0,40)}</span>
+                <span data-testid="opp-value">💰 ${fmtCurrency(o.value)}</span>
+                <span data-testid="opp-close-date">📅 ${fmtDate(o.closeDate)} ${d > 0 && d < 14 ? '⚠️' : ''}</span>
+                ${o.source ? `<span style="color: var(--gray); font-size: 0.7rem;" data-testid="opp-source">via ${o.source}</span>` : ''}
+            </div>
+            <div class="opp-desc">${(o.description||'').substring(0,120)}...</div>
+            <div class="opp-tags">
+                ${o.isLive ? '<span class="tag">🟢 LIVE</span>' : ''}
+                ${eligStatus === 'GO' ? '<span class="tag" style="background: rgba(154,205,50,0.2);">✅ GO</span>' : ''}
+                ${eligStatus === 'REVIEW' ? '<span class="tag" style="background: rgba(245,158,11,0.2); color: var(--orange);">🔍 REVIEW</span>' : ''}
+                ${eligStatus === 'NO-GO' ? '<span class="tag tag-nq">🚫 NO-GO</span>' : ''}
+                ${status === 'go' ? '<span class="tag" style="background: rgba(154,205,50,0.3);">📌 MARKED GO</span>' : ''}
+                ${status === 'review' ? '<span class="tag" style="background: rgba(245,158,11,0.3); color: var(--orange);">📌 MARKED REVIEW</span>' : ''}
+                ${status === 'nogo' ? '<span class="tag" style="background: rgba(239,68,68,0.3); color: var(--red);">📌 MARKED NO-GO</span>' : ''}
+            </div>
+            <div class="match-score ${sc} score-badge">
+                ${o.matchScore}%
+                <div class="score-tooltip">
+                    <div class="score-tooltip-title">📊 Score Breakdown</div>
+                    ${(o.matchBreakdown || []).map(b => b.info 
+                        ? `<div class="score-tooltip-row" style="color: var(--blue);"><span>${b.label}</span><span>ℹ️</span></div>`
+                        : `<div class="score-tooltip-row">
+                            <span>${b.label}</span>
+                            <span style="color: ${b.points >= 0 ? 'var(--green)' : 'var(--red)'};">${b.points >= 0 ? '+' : ''}${b.points}</span>
+                          </div>`
+                    ).join('')}
+                    <div class="score-tooltip-row" style="border-top: 1px solid var(--border); margin-top: 0.3rem; padding-top: 0.3rem;">
+                        <span>Total</span>
+                        <span>${o.matchScore}%</span>
+                    </div>
                 </div>
-                <div class="opp-agency" data-testid="opp-agency">${(o.agency || 'Agency').substring(0, 45)}</div>
             </div>
-            <div>
-                <span class="source-tag ${sourceClass}">${sourceName}</span>
-            </div>
-            <div class="opp-value" data-testid="opp-value">${fmtCurrency(o.value)}</div>
-            <div class="match-bar">
-                <div class="match-bar-bg">
-                    <div class="match-bar-fill ${matchClass}" style="width: ${o.matchScore}%;"></div>
-                </div>
-                <span class="match-percent">${o.matchScore}%</span>
-            </div>
-            <div class="opp-deadline" data-testid="opp-close-date">${fmtDate(o.closeDate)}</div>
-            <div>${statusPill}</div>
         </div>`;
     }).join('');
 }
 
 function renderQualifiedList() {
     const list = document.getElementById('qualifiedList');
-    const qual = opportunities.filter(o => o.eligibility.ok).slice(0, 5);
-    
+    if (!list) return;
+    const qual = opportunities.filter(o => o.eligibility?.ok).slice(0, 5);
+
     if (!qual.length) {
         list.innerHTML = '<div style="font-size: 0.75rem; color: var(--gray);">No qualified opportunities</div>';
         return;
@@ -2465,17 +1701,25 @@ function renderQualifiedList() {
 }
 
 function updateStats() {
-    const q = opportunities.filter(o => o.eligibility.ok);
+    const q = opportunities.filter(o => o.eligibility?.ok);
     const u = opportunities.filter(o => { const d = daysUntil(o.closeDate); return d <= 14 && d > 0; });
     const tv = opportunities.reduce((s, o) => s + (parseFloat(o.value) || 0), 0);
-    const am = opportunities.length ? Math.round(opportunities.reduce((s, o) => s + o.matchScore, 0) / opportunities.length) : 0;
-    
-    document.getElementById('statLive').textContent = opportunities.filter(o => o.isLive).length;
-    document.getElementById('statTotal').textContent = opportunities.length;
-    document.getElementById('statQualified').textContent = q.length;
-    document.getElementById('statUrgent').textContent = u.length;
-    document.getElementById('statValue').textContent = fmtCurrency(tv);
-    document.getElementById('statMatch').textContent = am + '%';
+    const am = opportunities.length ? Math.round(opportunities.reduce((s, o) => s + (o.matchScore || 0), 0) / opportunities.length) : 0;
+
+    const els = {
+        statLive: document.getElementById('statLive'),
+        statTotal: document.getElementById('statTotal'),
+        statQualified: document.getElementById('statQualified'),
+        statUrgent: document.getElementById('statUrgent'),
+        statValue: document.getElementById('statValue'),
+        statMatch: document.getElementById('statMatch')
+    };
+    if (els.statLive) els.statLive.textContent = opportunities.filter(o => o.isLive).length;
+    if (els.statTotal) els.statTotal.textContent = opportunities.length;
+    if (els.statQualified) els.statQualified.textContent = q.length;
+    if (els.statUrgent) els.statUrgent.textContent = u.length;
+    if (els.statValue) els.statValue.textContent = fmtCurrency(tv);
+    if (els.statMatch) els.statMatch.textContent = am + '%';
 }
 
 function updateOppSelect() {
@@ -2500,19 +1744,23 @@ function updatePipelineStats() {
     const goCount = Object.values(pipeline).filter(p => p.status === 'go').length;
     const reviewCount = Object.values(pipeline).filter(p => p.status === 'review').length;
     const nogoCount = Object.values(pipeline).filter(p => p.status === 'nogo').length;
-    
-    document.getElementById('pipelineGo').textContent = goCount;
-    document.getElementById('pipelineReview').textContent = reviewCount;
-    document.getElementById('pipelineNoGo').textContent = nogoCount;
-    
+
+    const pipelineGo = document.getElementById('pipelineGo');
+    const pipelineReview = document.getElementById('pipelineReview');
+    const pipelineNoGo = document.getElementById('pipelineNoGo');
+    if (pipelineGo) pipelineGo.textContent = goCount;
+    if (pipelineReview) pipelineReview.textContent = reviewCount;
+    if (pipelineNoGo) pipelineNoGo.textContent = nogoCount;
+
     // Update revenue calculator when pipeline changes
     updateRevenueCalculator();
 }
 
 function renderPipelinePage() {
     const container = document.getElementById('pipelineContent');
+    if (!container) return;
     const pipelineEntries = Object.entries(pipeline);
-    
+
     if (pipelineEntries.length === 0) {
         container.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: var(--gray);">
@@ -2578,7 +1826,7 @@ function renderPipelinePage() {
             <div style="display: flex; gap: 0.5rem;">
                 <button class="btn btn-sm btn-secondary" onclick="exportPipelineCSV()" title="Export as CSV">📊 Export CSV</button>
                 <button class="btn btn-sm btn-secondary" onclick="exportPipelinePDF()" title="Export as PDF">📄 Export PDF</button>
-                <button class="btn btn-sm btn-secondary" onclick="clearPipeline()" title="Remove all opportunities from pipeline (cannot be undone)">🗑️ Clear All</button>
+                <button class="btn btn-sm btn-secondary" onclick="clearPipeline()">🗑️ Clear All</button>
             </div>
         </div>
         ${renderGroup(goItems, 'GO - Ready to Pursue', 'var(--green)', '🟢')}
@@ -2886,31 +2134,6 @@ function updateRevenueCalculator() {
     }
 }
 
-// ========== QUICK ACTION HELPERS ==========
-function openNewProposal() {
-    // Navigate to Agent page for proposal generation
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('[data-page="agent"]').classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-agent').classList.add('active');
-}
-
-function openFindPartners() {
-    // Navigate to Subcontracting page
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('[data-page="subcontracting"]').classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-subcontracting').classList.add('active');
-}
-
-function openLessonsLearned() {
-    // Navigate to Train Agent page
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('[data-page="train"]').classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-train').classList.add('active');
-}
-
 // ========== WIN/LOSS OUTCOME TRACKING ==========
 function openOutcomeModal() {
     const modal = document.getElementById('outcomeModal');
@@ -3110,30 +2333,23 @@ function showDetail(id) {
         </div>
         ` : ''}
         
-        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--blue);">
-            <strong style="font-size: 0.85rem; color: var(--blue); display: block; margin-bottom: 0.5rem;">📋 What They're Looking For</strong>
-            <p style="font-size: 0.85rem; line-height: 1.6; color: #e0e0e0;">${o.description||'No description available'}</p>
+        <div style="background: #1a1a1a; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem;">
+            <strong style="font-size: 0.75rem; color: var(--gray);">Description</strong>
+            <p style="font-size: 0.8rem; margin-top: 0.4rem; line-height: 1.5;">${o.description||'No description'}</p>
         </div>
     `;
     
     // Show validation results if available
     if (validation) {
-        // PRODUCTION: Always backend validated with full audit trail
+        // PRODUCTION: Always backend validated - no demo indicator
         const requestId = pipeline[o.id]?.requestId || 'N/A';
-        const validatedAt = pipeline[o.id]?.validatedAt || new Date().toISOString();
-        const oppHash = btoa(o.id + (o.title||'').substring(0,20)).substring(0,12);
         body += `
             <div class="validation-section">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h3>📋 Validation Checks</h3>
                     <span style="font-size: 0.7rem; color: var(--green); background: rgba(154,205,50,0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">🔌 Backend Validated</span>
                 </div>
-                <div style="font-size: 0.65rem; color: var(--gray); margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; gap: 1rem;">
-                    <span title="Unique request identifier">📎 ${requestId}</span>
-                    <span title="When validation was performed">🕐 ${new Date(validatedAt).toLocaleString()}</span>
-                    <span title="Opportunity fingerprint">🔐 ${oppHash}</span>
-                    <span title="Validator version">📦 v2.0.0</span>
-                </div>
+                <div style="font-size: 0.65rem; color: var(--gray); margin-bottom: 0.5rem;">Request ID: ${requestId}</div>
                 <div class="check-list">
                     ${validation.checks.map(c => `
                         <div class="check-item">
@@ -3177,49 +2393,35 @@ function showDetail(id) {
         }
     }
     
-    // Source link - distinguish direct links from portal links
-    const smartLink = getSmartSourceLink(o);
-    if (o.link) {
-        const isPortal = o.isPortal || !smartLink.isDirect;
-        const linkLabel = isPortal ? 'Visit Portal' : 'View Opportunity';
-        body += `
-            <div style="font-size: 0.75rem; color: var(--gray); margin-bottom: 1rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px;">
-                ${isPortal ? '🌐' : '🔗'} <a href="${o.link}" target="_blank" rel="noopener noreferrer" style="color: var(--green); font-weight: 500;">${linkLabel}</a>
-                <span style="color: var(--gray);"> on ${o.source || 'Source'}</span>
-                ${isPortal && smartLink.searchTerms ? `
-                    <div style="margin-top: 0.4rem; padding: 0.4rem; background: rgba(59,130,246,0.1); border-radius: 4px; border-left: 2px solid var(--blue);">
-                        <span style="color: var(--blue); font-size: 0.7rem;">💡 Search tip:</span>
-                        <code style="background: #222; padding: 0.15rem 0.4rem; border-radius: 3px; color: var(--green); font-size: 0.7rem;">${smartLink.searchTerms.primary}</code>
-                    </div>
-                ` : ''}
-            </div>
-        `;
-    }
-
+    body += `
+        <div style="background: #1a1a1a; padding: 0.5rem; border-radius: 4px;">
+            <label style="font-size: 0.6rem; color: var(--gray);">🔗 Source Link</label><br>
+            ${o.link ? `<a href="${o.link}" target="_blank" rel="noopener noreferrer" style="color: var(--green); font-size: 0.75rem;">${o.link.length > 60 ? o.link.substring(0, 60) + '...' : o.link}</a>` : '<span style="color: var(--gray); font-size: 0.75rem;">No direct link available</span>'}
+        </div>
+    `;
+    
     document.getElementById('modalBody').innerHTML = body;
     
-    // Simplified footer: Agent-focused with clear actions
+    // Check if Quote button should show
+    const quoteBtn = checkQuoteEligibility(o) 
+        ? `<button class="btn btn-quote btn-sm" onclick="openQuoteRequest('${o.id}')" title="Prepare a non-binding distributor RFQ for pricing validation.">📋 Request Distributor Quote</button>`
+        : '';
+    
+    const viewSourceBtn = o.link 
+        ? `<button class="btn btn-primary" onclick="window.open('${o.link}','_blank')">🔗 View Source</button>`
+        : `<button class="btn btn-primary" disabled title="No source link available">🔗 View Source</button>`;
+    
     document.getElementById('modalFooter').innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
-            <!-- Primary: Ask Agent (prominent) -->
-            <button class="btn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); color: #fff; padding: 0.75rem 2rem; font-size: 1rem; width: 100%; max-width: 300px;" onclick="agentReviewOpportunity('${o.id}')" data-testid="btn-agent-review">
-                🤖 Ask Agent to Review
-            </button>
-
-            <!-- Decision buttons -->
-            <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                <button class="btn btn-go" onclick="setPipelineStatus('${o.id}','go')" ${!o.eligibility.ok?'disabled':''} style="padding: 0.5rem 1.5rem;">✅ GO</button>
-                <button class="btn btn-nogo" onclick="setPipelineStatus('${o.id}','nogo')" style="padding: 0.5rem 1.5rem;">🚫 No-Go</button>
-            </div>
-
-            <!-- Secondary actions -->
-            <div style="display: flex; gap: 0.5rem; justify-content: center; font-size: 0.8rem;">
-                ${o.link ? `<a href="${o.link}" target="_blank" rel="noopener noreferrer" style="color: var(--green);">${o.isPortal ? '🌐 Visit Portal' : '🔗 View Opportunity'}</a>` : ''}
-                ${o.eligibility.ok ? `<span style="color: var(--gray);">|</span> <a href="#" onclick="goToProposal('${o.id}'); return false;" style="color: var(--blue);">📝 Proposal</a>` : ''}
-                <span style="color: var(--gray);">|</span>
-                <a href="#" onclick="closeModal(); return false;" style="color: var(--gray);">Close</a>
-            </div>
-        </div>
+        ${viewSourceBtn}
+        <button class="btn btn-secondary" onclick="runValidation('${o.id}')" ${!o.eligibility.ok?'disabled':''} data-testid="btn-validate">🔍 Validate</button>
+        <button class="btn btn-go btn-sm" onclick="setPipelineStatus('${o.id}','go')" ${!o.eligibility.ok?'disabled':''} data-testid="btn-go">✅ GO</button>
+        <button class="btn btn-review btn-sm" onclick="setPipelineStatus('${o.id}','review')" data-testid="btn-review">🔍 Review</button>
+        <button class="btn btn-nogo btn-sm" onclick="setPipelineStatus('${o.id}','nogo')" data-testid="btn-nogo">🚫 No-Go</button>
+        ${quoteBtn}
+        <button class="btn btn-proposal btn-sm" onclick="goToProposal('${o.id}')" ${!o.eligibility.ok?'disabled':''} data-testid="btn-proposal">📝 Proposal</button>
+        <button class="btn btn-sm" style="background: linear-gradient(135deg, #1B4F72, #2E86AB); color: #fff;" onclick="downloadBeautifulProposal('${o.id}')" data-testid="btn-download-proposal">📄 Download Proposal</button>
+        <button class="btn btn-sm" style="background: linear-gradient(135deg, var(--green), #2E86AB); color: #fff;" onclick="askAgentAboutOpp('${o.id}')" data-testid="btn-ask-agent">🤖 Ask Agent_SAM</button>
+        <button class="btn btn-secondary" onclick="closeModal()" data-testid="btn-close-modal">Close</button>
     `;
     
     document.getElementById('detailModal').classList.add('active');
@@ -3450,13 +2652,11 @@ async function runValidation(id) {
             checklist: d.analysis.checklist,
             timeline: d.analysis.timeline,
             timestamp: new Date().toISOString(),
-            validatedAt: new Date().toISOString(), // Audit timestamp
             title: o.title,
             agency: o.agency,
             value: o.value,
             backendValidated: true,
-            requestId: requestId,
-            validatorVersion: '2.0.0' // Audit version
+            requestId: requestId
         };
         safeStorage('pipeline', pipeline);
         
@@ -4541,7 +3741,7 @@ function renderPurchasing() {
                 <span style="font-size: 0.7rem; color: var(--gray);">${o.purchasing.reason}</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
-                ${o.link ? `<a href="${o.link}" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: var(--green);">${o.isPortal ? '🌐 Visit Portal' : '🔗 View Opportunity'} →</a>` : '<span style="font-size: 0.7rem; color: var(--gray);">No direct link</span>'}
+                ${o.link ? `<a href="${o.link}" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: var(--green);">View Source →</a>` : '<span style="font-size: 0.7rem; color: var(--gray);">No direct link</span>'}
                 ${o.matchScore >= 65 ? `<button class="btn btn-sm btn-quote" onclick="event.stopPropagation(); openQuoteRequest('${o.id}')">📋 Request Quote</button>` : ''}
             </div>
         </div>
@@ -4551,9 +3751,8 @@ function renderPurchasing() {
 
 async function loadSubcontracting() {
     const list = document.getElementById('subList');
-    const demoBanner = document.getElementById('subDemoBanner');
     list.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--gray);"><div class="loading-spinner"></div><p>Loading opportunities...</p></div>';
-
+    
     try {
         const response = await fetch('/api/subcontracting');
         if (response.ok) {
@@ -4562,7 +3761,6 @@ async function loadSubcontracting() {
                 subOpportunities = data.opportunities;
                 document.getElementById('subSource').innerHTML = '🟢 Live';
                 document.getElementById('subSource').style.color = 'var(--green)';
-                if (demoBanner) demoBanner.style.display = 'none'; // Hide demo warning for live data
                 renderSubOpportunities();
                 return;
             }
@@ -4570,12 +3768,11 @@ async function loadSubcontracting() {
     } catch(e) {
         console.log('Subcontracting API unavailable, using demo');
     }
-
-    // Fallback to demo data - show prominent warning
+    
+    // Fallback to demo data
     subOpportunities = getSubDemoData();
     document.getElementById('subSource').innerHTML = '📊 Demo';
     document.getElementById('subSource').style.color = 'var(--orange)';
-    if (demoBanner) demoBanner.style.display = 'flex'; // Show demo warning
     renderSubOpportunities();
 }
 
@@ -4875,6 +4072,73 @@ function openOutreachEmail() {
     window.open(`mailto:${to}?subject=${subject}&body=${body}`, '_blank');
 }
 
+// ========== EMAIL ALERTS ==========
+async function testDigest() {
+    const statusEl = document.getElementById('digestStatus');
+    statusEl.innerHTML = '<span style="color: var(--blue);">⏳ Triggering digest...</span>';
+    
+    try {
+        const r = await fetch(BACKEND_BASE + '/api/cron/daily-scan', {
+            method: 'GET',
+            headers: { 'X-Request-ID': crypto.randomUUID() }
+        });
+        
+        const data = await r.json();
+        
+        if (data.success) {
+            statusEl.innerHTML = `<span style="color: var(--green);">✅ Digest sent! ${data.stats?.go || 0} GO, ${data.stats?.urgent || 0} urgent</span>`;
+            log(`Digest sent: ${data.stats?.go || 0} GO opportunities, ${data.stats?.urgent || 0} urgent`, 'success');
+        } else {
+            throw new Error(data.error || 'Unknown error');
+        }
+    } catch (e) {
+        statusEl.innerHTML = `<span style="color: var(--red);">❌ ${e.message}</span>`;
+        log('Digest test failed: ' + e.message, 'error');
+    }
+}
+
+async function subscribeAlerts() {
+    const email = document.getElementById('alertEmail').value;
+    const frequency = document.getElementById('alertFreq').value;
+    
+    if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    try {
+        const backendUrl = document.getElementById('apiUrl').value;
+        const r = await fetch(backendUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                frequency,
+                filters: {
+                    federal: true,
+                    sbir: true,
+                    state: true,
+                    dibbs: true,
+                    minValue: 50000,
+                    naicsCodes: ['333249', '333922', '541330', '541512', '541715', '238210']
+                }
+            })
+        });
+        const data = await r.json();
+        
+        if (data.success) {
+            log(`✅ Subscribed ${email} for ${frequency} alerts`, 'success');
+            alert(`Success! You'll receive ${frequency} alerts at ${email}`);
+            document.getElementById('alertEmail').value = '';
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (e) {
+        log('Email subscription failed: ' + e.message, 'error');
+        alert('Subscription failed. Please try again.');
+    }
+}
+
 // ========== CATEGORY BADGES ==========
 function getCategoryBadge(type) {
     const badges = {
@@ -4907,256 +4171,6 @@ const QUOTE_AUTOMATION_KEYWORDS = [
     'universal robot', 'cobot', 'eoat', 'gripper', 'automation', 
     'conveyor', 'actuator', 'encoder', 'motor', 'pneumatic', 'valve'
 ];
-
-// ========== SMART SOURCE LINKS ==========
-/**
- * Generates a smart source link for the opportunity
- * For portals without direct links, creates search URLs with relevant terms
- */
-function getSmartSourceLink(o) {
-    const baseLink = o.link || '';
-    const title = o.title || '';
-    const source = (o.source || '').toLowerCase();
-    const type = (o.type || '').toLowerCase();
-
-    // If it's a direct opportunity link (SAM.gov, etc.), use it
-    if (baseLink.includes('sam.gov/opp/') || baseLink.includes('sbir.gov') || baseLink.includes('grants.gov/search-results')) {
-        return { url: baseLink, isDirect: true, searchTip: null };
-    }
-
-    // For state/county portals, create search-enhanced links
-    const searchTerms = extractSearchTerms(o);
-
-    // Portal-specific search URL builders
-    const portalSearchUrls = {
-        'caleprocure': {
-            baseUrl: 'https://caleprocure.ca.gov/pages/Events-BS3/event-search.aspx',
-            tip: `Search for: "${searchTerms.primary}" in the keyword field. Filter by NAICS ${o.naicsCode || '333249'}.`
-        },
-        'michigan': {
-            baseUrl: 'https://sigma.michigan.gov/webapp/PRDVSS2X1/AltSelfService',
-            tip: `Search SIGMA VSS for: "${searchTerms.primary}". Register as vendor first if needed.`
-        },
-        'txsmartbuy': {
-            baseUrl: 'https://www.txsmartbuy.com/sp',
-            tip: `Search SmartBuy for: "${searchTerms.primary}". Check HUB requirements.`
-        }
-    };
-
-    // Try to match portal
-    for (const [portal, config] of Object.entries(portalSearchUrls)) {
-        if (baseLink.toLowerCase().includes(portal) || source.includes(portal.replace('_', ' '))) {
-            return {
-                url: baseLink || config.baseUrl,
-                isDirect: false,
-                searchTip: config.tip,
-                searchTerms: searchTerms
-            };
-        }
-    }
-
-    // County/other portals
-    if (type === 'county' || type === 'state' || o.isPortal) {
-        return {
-            url: baseLink,
-            isDirect: false,
-            searchTip: `Search the portal for: "${searchTerms.primary}". Keywords to try: ${searchTerms.keywords.join(', ')}`,
-            searchTerms: searchTerms
-        };
-    }
-
-    // Default - direct link
-    return { url: baseLink, isDirect: true, searchTip: null };
-}
-
-/**
- * Extracts search terms from opportunity for portal searches
- */
-function extractSearchTerms(o) {
-    const title = (o.title || '').toLowerCase();
-    const desc = (o.description || '').toLowerCase();
-    const text = title + ' ' + desc;
-
-    // Primary search term - most specific keyword found
-    const specificTerms = ['robotic welding', 'plc', 'scada', 'conveyor', 'automation', 'robotics', 'vision system'];
-    let primary = 'automation';
-    for (const term of specificTerms) {
-        if (text.includes(term)) {
-            primary = term;
-            break;
-        }
-    }
-
-    // Additional keywords
-    const keywords = [];
-    const allTerms = ['robot', 'automation', 'plc', 'controls', 'conveyor', 'industrial', 'manufacturing'];
-    for (const term of allTerms) {
-        if (text.includes(term) && !keywords.includes(term)) {
-            keywords.push(term);
-        }
-    }
-
-    // Add NAICS if available
-    if (o.naicsCode) {
-        keywords.push(`NAICS ${o.naicsCode}`);
-    }
-
-    return { primary, keywords: keywords.slice(0, 5) };
-}
-
-// ========== AGENT REVIEW FUNCTIONALITY ==========
-/**
- * Triggers AI-assisted review of an opportunity
- * Opens the Agent panel with a structured review request
- */
-function agentReviewOpportunity(id) {
-    const o = opportunities.find(x => x.id === id);
-    if (!o) return;
-
-    // Close the modal
-    closeModal();
-
-    // Navigate to Agent_SAM page
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('[data-page="agent"]').classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-agent').classList.add('active');
-
-    // Set the context
-    const select = document.getElementById('agentContext');
-    if (select) {
-        select.value = id;
-        agentContext = o;
-    }
-
-    // Generate structured review request
-    const reviewRequest = `🔍 **DETAILED REVIEW REQUEST**
-
-Please provide a comprehensive review of this opportunity:
-
-**${o.title}**
-- Agency: ${o.agency || 'Unknown'}
-- Value: ${fmtCurrency(o.value)}
-- NAICS: ${o.naicsCode || 'N/A'}
-- Set-Aside: ${o.setAside || 'Full & Open'}
-- Source: ${o.source || 'Unknown'}
-- Closes: ${fmtDate(o.closeDate)}
-
-**Description:**
-${(o.description || 'No description available').substring(0, 800)}
-
----
-
-**Please analyze and provide:**
-
-1. **ELIGIBILITY CHECK** ✅
-   - Are we certified for this set-aside type?
-   - Do we have the required NAICS code?
-   - Any contract vehicle requirements we don't meet?
-
-2. **TECHNICAL FIT** 🔧
-   - Does this match our capabilities (robotic welding, PLC/SCADA, conveyor systems)?
-   - What equipment would likely be needed?
-   - Can we self-perform or need teaming?
-
-3. **COMPETITIVE ANALYSIS** 📊
-   - Who are likely competitors?
-   - What's our win probability estimate?
-   - Price sensitivity assessment
-
-4. **RED FLAGS** 🚩
-   - Any disqualifying requirements?
-   - Unrealistic timeline or scope?
-   - Missing critical information?
-
-5. **RECOMMENDATION**
-   - GO / NO-GO / NEEDS MORE INFO
-   - Confidence level (High/Medium/Low)
-   - Specific next steps if GO
-
-6. **ACTION ITEMS** 📋
-   - What do we need to do in the next 48 hours?
-   - Who needs to be involved?`;
-
-    document.getElementById('agentInput').value = reviewRequest;
-    setTimeout(() => sendToAgent(), 300);
-}
-
-/**
- * Generates a review checklist for manual review
- */
-function generateReviewChecklist(o) {
-    const checks = [];
-    const purchasingElig = analyzePurchasingEligibility(o);
-
-    // Eligibility checks
-    checks.push({
-        category: 'Eligibility',
-        items: [
-            { label: 'Set-aside requirements met', status: o.eligibility?.status === 'GO' ? 'pass' : 'check', detail: o.setAside || 'Full & Open' },
-            { label: 'NAICS code match', status: ['333249', '333922', '541330', '541512', '541715', '238210'].includes(o.naicsCode) ? 'pass' : 'check', detail: o.naicsCode || 'Not specified' },
-            { label: 'No contract vehicle required', status: !(o.description || '').toLowerCase().includes('holders only') ? 'pass' : 'fail', detail: 'Check for SeaPort, OASIS, GSA restrictions' }
-        ]
-    });
-
-    // Technical checks
-    checks.push({
-        category: 'Technical Fit',
-        items: [
-            { label: 'Hardware component identified', status: purchasingElig.eligible ? 'pass' : 'check', detail: purchasingElig.category },
-            { label: 'Within our capabilities', status: 'check', detail: 'Review scope for robotic/automation fit' },
-            { label: 'Timeline feasible', status: 'check', detail: `Closes: ${fmtDate(o.closeDate)}` }
-        ]
-    });
-
-    // Business checks
-    checks.push({
-        category: 'Business Case',
-        items: [
-            { label: 'Value justified', status: o.value > 50000 ? 'pass' : 'check', detail: fmtCurrency(o.value) },
-            { label: 'Win probability reasonable', status: o.matchScore >= 65 ? 'pass' : 'check', detail: `${o.matchScore || 0}% match` },
-            { label: 'Resource availability', status: 'check', detail: 'Confirm BD/proposal team availability' }
-        ]
-    });
-
-    return checks;
-}
-
-/**
- * Opens the source link with smart navigation
- */
-function openSmartSourceLink(id) {
-    const o = opportunities.find(x => x.id === id);
-    if (!o) return;
-
-    const smartLink = getSmartSourceLink(o);
-
-    if (smartLink.isDirect) {
-        // Direct link - just open it
-        window.open(smartLink.url, '_blank');
-    } else {
-        // Portal link - show guidance modal first
-        const guidance = `
-📍 **How to Find This Opportunity**
-
-This is a procurement portal, not a direct link. Follow these steps:
-
-1. **Click "Open Portal"** to go to ${o.agency || 'the portal'}
-2. **Search for:** ${smartLink.searchTerms?.primary || 'automation'}
-3. **Additional keywords:** ${smartLink.searchTerms?.keywords?.join(', ') || 'robotics, controls, PLC'}
-${o.naicsCode ? `4. **Filter by NAICS:** ${o.naicsCode}` : ''}
-
-💡 **Tip:** ${smartLink.searchTip || 'Use the portal search function to find current opportunities.'}
-
----
-Would you like to open the portal now?
-        `;
-
-        if (confirm(guidance)) {
-            window.open(smartLink.url, '_blank');
-        }
-    }
-}
 
 // ========== PURCHASING ELIGIBILITY ANALYSIS ==========
 function analyzePurchasingEligibility(o) {
