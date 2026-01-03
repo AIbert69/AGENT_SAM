@@ -1,29 +1,19 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/api/v1/scan", "destination": "/api/v1/scan" },
-    { "source": "/api/v1/validate", "destination": "/api/validate" },
-    { "source": "/api/v1/generate", "destination": "/api/generate" },
-    { "source": "/api/v1/rfq", "destination": "/api/generate-proposal" },
-    { "source": "/api/v1/health", "destination": "/api/health" },
-    { "source": "/api/sam", "destination": "/api/v1/scan" },
-    { "source": "/api/scan", "destination": "/api/v1/scan" },
-    { "source": "/proposal-editor", "destination": "/proposal-editor.html" }
-  ],
-  "headers": [
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
+      "src": "/proposal-editor",
+      "dest": "/proposal-editor.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 60
-    }
-  }
+  ]
 }
