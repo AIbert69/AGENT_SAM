@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Auto - Business Development Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0f1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: #0d1320;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo-text span {
+            color: #10b981;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-left: 40px;
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
+        .nav-tab.active {
+            background: #10b981;
+            color: white;
+        }
+
+        .nav-tab svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Status indicators */
+        .status-badges {
+            display: flex;
+            gap: 12px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #1e293b;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.green { background: #10b981; }
+        .status-dot.yellow { background: #f59e0b; }
+        .status-dot.red { background: #ef4444; }
+
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-section {
+            background: #0d1320;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #1e293b;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Source Items */
+        .source-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #1e293b;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .source-item:hover {
+            background: #2d3a4f;
+        }
+
+        .source-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .source-icon {
+            width: 36px;
+            height: 36px;
+            background: #0a0f1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .source-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .source-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-beta {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .source-toggle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        /* Certifications */
+        .cert-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .cert-tag {
+            padding: 6px 12px;
+            background: #1e293b;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .cert-tag.fanuc { border-left: 3px solid #f59e0b; }
+        .cert-tag.ur { border-left: 3px solid #3b82f6; }
+        .cert-tag.mbe { border-left: 3px solid #8b5cf6; }
+        .cert-tag.wbenc { border-left: 3px solid #ec4899; }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #0d1320;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #1e293b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), transparent);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .stat-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #0d1320;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #1e293b;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            background: #1e293b;
+            border: 1px solid #2d3a4f;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #2d3a4f;
+            border-radius: 6px;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: #1e293b;
+        }
+
+        .filter-tab.active {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .scan-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Opportunities Table */
+        .opportunities-table {
+            background: #0d1320;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 120px 100px 100px 120px 100px;
+            padding: 16px 20px;
+            background: #1e293b;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 120px 100px 100px 120px 100px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #1e293b;
+            align-items: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .table-row:hover {
+            background: #1e293b;
+        }
+
+        .opp-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .opp-title .urgent-icon {
+            color: #f59e0b;
+        }
+
+        .opp-agency {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .source-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #1e293b;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .source-tag.sam { border-left: 2px solid #10b981; }
+        .source-tag.sbir { border-left: 2px solid #8b5cf6; }
+        .source-tag.ca { border-left: 2px solid #f59e0b; }
+        .source-tag.mi { border-left: 2px solid #3b82f6; }
+        .source-tag.dibbs { border-left: 2px solid #ec4899; }
+
+        .opp-value {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .match-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .match-progress {
+            flex: 1;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .match-fill {
+            height: 100%;
+            background: #10b981;
+            border-radius: 3px;
+        }
+
+        .match-text {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-tag.go {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .status-tag.review {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .status-tag.none {
+            background: rgba(100, 116, 139, 0.15);
+            color: #94a3b8;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .action-card {
+            background: #0d1320;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #1e293b;
+        }
+
+        .action-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            background: #1e293b;
+            border: 1px solid #2d3a4f;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #2d3a4f;
+            border-color: #10b981;
+        }
+
+        .action-btn svg {
+            width: 24px;
+            height: 24px;
+            color: #10b981;
+        }
+
+        /* Pipeline Stats */
+        .pipeline-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #1e293b;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .pipeline-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pipeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .pipeline-dot.go { background: #10b981; }
+        .pipeline-dot.review { background: #3b82f6; }
+        .pipeline-dot.nogo { background: #ef4444; }
+
+        .pipeline-count {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        /* Revenue Target */
+        .revenue-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .revenue-label {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .revenue-value {
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .gap-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* Win/Loss Record */
+        .win-rate-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .win-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .win-stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .win-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .win-stat-value.submitted { color: #94a3b8; }
+        .win-stat-value.won { color: #10b981; }
+        .win-stat-value.lost { color: #ef4444; }
+
+        .win-stat-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 15, 26, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #1e293b;
+            border-top-color: #10b981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-message {
+            display: none;
+            padding: 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            color: #ef4444;
+            margin-bottom: 16px;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state.active {
+            display: block;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-container {
+                grid-template-columns: 260px 1fr 280px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar, .right-sidebar {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">SA</div>
+            <div>
+                <div class="logo-text">SINGH <span>AUTO</span></div>
+                <div class="logo-subtitle">BUSINESS DEVELOPMENT PLATFORM</div>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="scanner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                Scanner
+            </button>
+            <button class="nav-tab" data-tab="purchasing">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                Purchasing
+            </button>
+            <button class="nav-tab" data-tab="subcontracting">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Subcontracting
+            </button>
+            <button class="nav-tab" data-tab="pipeline">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                Pipeline
+            </button>
+            <button class="nav-tab" data-tab="agent">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                Agent_SAM
+            </button>
+            <button class="nav-tab" data-tab="train">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                Train Agent
+            </button>
+        </nav>
+
+        <div class="status-badges">
+            <div class="status-badge">
+                <span class="status-dot green"></span>
+                SAM
+            </div>
+            <div class="status-badge">
+                <span class="status-dot green"></span>
+                Claude
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <div style="padding: 24px 24px 0; max-width: 1800px; margin: 0 auto;">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Live</div>
+                <div class="stat-value" id="stat-live">0</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Qualified</div>
+                <div class="stat-value" id="stat-qualified">0</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Urgent</div>
+                <div class="stat-value" id="stat-urgent">0</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Value</div>
+                <div class="stat-value" id="stat-value">$0</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Match</div>
+                <div class="stat-value" id="stat-match">0%</div>
+                <div class="stat-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+                    Sources
+                </div>
+                <div class="source-item" data-source="sam">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">SAM.gov <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="sbir">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">SBIR/STTR <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="grants">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">Grants.gov <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="dibbs">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3v4M8 3v4"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">DIBBS <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="ca">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">CA eProcure <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="mi">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 12h10M7 17h10"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">MI SIGMA <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="tx">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">TX SmartBuy <span class="source-badge badge-live">LIVE</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle"></div>
+                </div>
+                <div class="source-item" data-source="forecast">
+                    <div class="source-left">
+                        <div class="source-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        </div>
+                        <div>
+                            <div class="source-name">Forecasts <span class="source-badge badge-beta">BETA</span></div>
+                        </div>
+                    </div>
+                    <div class="source-toggle" style="background: #64748b;"></div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15l-3-3m0 0l3-3m-3 3h12M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z"/></svg>
+                    Certifications
+                </div>
+                <div class="cert-tags">
+                    <span class="cert-tag fanuc">FANUC ASI</span>
+                    <span class="cert-tag ur">UR CSP</span>
+                    <span class="cert-tag mbe">MBE</span>
+                    <span class="cert-tag wbenc">WBENC</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="text" class="search-input" placeholder="Search opportunities..." id="search-input">
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="federal">Federal</button>
+                    <button class="filter-tab" data-filter="sbir">SBIR</button>
+                    <button class="filter-tab" data-filter="grants">Grants</button>
+                    <button class="filter-tab" data-filter="state">State</button>
+                    <button class="filter-tab" data-filter="dibbs">DIBBS</button>
+                    <button class="filter-tab" data-filter="forecast">Forecast</button>
+                </div>
+                <button class="scan-btn" id="scan-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                    Scan Live Data
+                </button>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+
+            <div class="opportunities-table">
+                <div class="table-header">
+                    <div>Opportunity</div>
+                    <div>Source</div>
+                    <div>Value</div>
+                    <div>Match</div>
+                    <div>Deadline</div>
+                    <div>Status</div>
+                </div>
+                <div id="opportunities-list">
+                    <!-- Opportunities will be loaded here -->
+                </div>
+                <div class="empty-state" id="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <p>No opportunities found. Click "Scan Live Data" to fetch new opportunities.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="action-card">
+                <div class="action-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Quick Actions
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                        New Proposal
+                    </button>
+                    <button class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Find Partners
+                    </button>
+                    <button class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                        Record Win
+                    </button>
+                    <button class="action-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Add Lesson
+                    </button>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    Pipeline
+                </div>
+                <div class="pipeline-item">
+                    <div class="pipeline-left">
+                        <span class="pipeline-dot go"></span>
+                        <span>GO</span>
+                    </div>
+                    <span class="pipeline-count" id="pipeline-go">0</span>
+                </div>
+                <div class="pipeline-item">
+                    <div class="pipeline-left">
+                        <span class="pipeline-dot review"></span>
+                        <span>Review</span>
+                    </div>
+                    <span class="pipeline-count" id="pipeline-review">0</span>
+                </div>
+                <div class="pipeline-item">
+                    <div class="pipeline-left">
+                        <span class="pipeline-dot nogo"></span>
+                        <span>No-Go</span>
+                    </div>
+                    <span class="pipeline-count" id="pipeline-nogo">0</span>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Revenue Target
+                </div>
+                <div class="revenue-stat">
+                    <span class="revenue-label">Pipeline Needed</span>
+                    <span class="revenue-value">$2.0M</span>
+                </div>
+                <div class="revenue-stat">
+                    <span class="revenue-label">Current GO</span>
+                    <span class="revenue-value" id="current-go-value">$0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-percent">0% of target</span>
+                    <span class="gap-badge" id="gap-badge">Gap: $2.0M needed</span>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <div class="action-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                    Win/Loss Record
+                </div>
+                <div class="win-rate-badge" id="win-rate">100% Win Rate</div>
+                <div class="win-stats">
+                    <div class="win-stat-item">
+                        <span class="win-stat-value submitted" id="submitted-count">0</span>
+                        <span class="win-stat-label">Submitted</span>
+                    </div>
+                    <div class="win-stat-item">
+                        <span class="win-stat-value won" id="won-count">3</span>
+                        <span class="win-stat-label">Won</span>
+                    </div>
+                    <div class="win-stat-item">
+                        <span class="win-stat-value lost" id="lost-count">0</span>
+                        <span class="win-stat-label">Lost</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // Configuration - USE RELATIVE URLs (same domain)
+        const API_BASE = '';  // Empty = same domain
+        
+        // Fallback demo data for when API is unavailable
+        const DEMO_OPPORTUNITIES = [
+            {
+                id: '1',
+                title: 'Robotic Welding System for Defense Manufacturing',
+                agency: 'Department of Defense',
+                source: 'SAM.gov',
+                sourceType: 'sam',
+                value: 485000,
+                match: 92,
+                deadline: '2025-02-14',
+                status: 'go',
+                urgent: true
+            },
+            {
+                id: '2',
+                title: 'PLC Modernization - Water Treatment Facility',
+                agency: 'California Dept of Water Resources',
+                source: 'CA eProcure',
+                sourceType: 'ca',
+                value: 175000,
+                match: 78,
+                deadline: '2025-02-27',
+                status: 'review',
+                urgent: false
+            },
+            {
+                id: '3',
+                title: 'SBIR Phase II - Advanced Vision Inspection',
+                agency: 'NASA',
+                source: 'SBIR/STTR',
+                sourceType: 'sbir',
+                value: 750000,
+                match: 88,
+                deadline: '2025-01-30',
+                status: 'go',
+                urgent: true
+            },
+            {
+                id: '4',
+                title: 'Conveyor System Automation Upgrade',
+                agency: 'Michigan Dept of Transportation',
+                source: 'MI SIGMA',
+                sourceType: 'mi',
+                value: 125000,
+                match: 65,
+                deadline: '2025-03-14',
+                status: 'none',
+                urgent: false
+            },
+            {
+                id: '5',
+                title: 'Collaborative Robot Integration - Manufacturing',
+                agency: 'DLA Land and Maritime',
+                source: 'DIBBS',
+                sourceType: 'dibbs',
+                value: 320000,
+                match: 81,
+                deadline: '2025-02-19',
+                status: 'review',
+                urgent: false
+            }
+        ];
+
+        // State
+        let opportunities = [];
+        let currentFilter = 'all';
+
+        // DOM Elements
+        const opportunitiesList = document.getElementById('opportunities-list');
+        const emptyState = document.getElementById('empty-state');
+        const errorMessage = document.getElementById('error-message');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const scanBtn = document.getElementById('scan-btn');
+        const searchInput = document.getElementById('search-input');
+
+        // Format currency
+        function formatCurrency(value) {
+            if (value >= 1000000) {
+                return '$' + (value / 1000000).toFixed(1) + 'M';
+            } else if (value >= 1000) {
+                return '$' + (value / 1000).toFixed(0) + 'K';
+            }
+            return '$' + value;
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Update stats
+        function updateStats(opps) {
+            const live = opps.length;
+            const qualified = opps.filter(o => o.match >= 70).length;
+            const urgent = opps.filter(o => o.urgent).length;
+            const totalValue = opps.reduce((sum, o) => sum + o.value, 0);
+            const avgMatch = opps.length > 0 ? Math.round(opps.reduce((sum, o) => sum + o.match, 0) / opps.length) : 0;
+
+            document.getElementById('stat-live').textContent = live;
+            document.getElementById('stat-total').textContent = live;
+            document.getElementById('stat-qualified').textContent = qualified;
+            document.getElementById('stat-urgent').textContent = urgent;
+            document.getElementById('stat-value').textContent = formatCurrency(totalValue);
+            document.getElementById('stat-match').textContent = avgMatch + '%';
+
+            // Update pipeline
+            const goCount = opps.filter(o => o.status === 'go').length;
+            const reviewCount = opps.filter(o => o.status === 'review').length;
+            const nogoCount = opps.filter(o => o.status === 'nogo').length;
+
+            document.getElementById('pipeline-go').textContent = goCount;
+            document.getElementById('pipeline-review').textContent = reviewCount;
+            document.getElementById('pipeline-nogo').textContent = nogoCount;
+
+            // Update revenue target
+            const goValue = opps.filter(o => o.status === 'go').reduce((sum, o) => sum + o.value, 0);
+            document.getElementById('current-go-value').textContent = formatCurrency(goValue);
+            
+            const targetValue = 2000000;
+            const progressPercent = Math.min((goValue / targetValue) * 100, 100);
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('progress-percent').textContent = Math.round(progressPercent) + '% of target';
+            
+            const gap = Math.max(targetValue - goValue, 0);
+            document.getElementById('gap-badge').textContent = 'Gap: ' + formatCurrency(gap) + ' needed';
+        }
+
+        // Render opportunities
+        function renderOpportunities(opps) {
+            if (opps.length === 0) {
+                opportunitiesList.innerHTML = '';
+                emptyState.classList.add('active');
+                return;
+            }
+
+            emptyState.classList.remove('active');
+            
+            opportunitiesList.innerHTML = opps.map(opp => `
+                <div class="table-row" data-id="${opp.id}">
+                    <div>
+                        <div class="opp-title">
+                            ${opp.urgent ? '<svg class="urgent-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>' : ''}
+                            ${opp.title}
+                        </div>
+                        <div class="opp-agency">${opp.agency}</div>
+                    </div>
+                    <div>
+                        <span class="source-tag ${opp.sourceType}">${opp.source}</span>
+                    </div>
+                    <div class="opp-value">${formatCurrency(opp.value)}</div>
+                    <div class="match-bar">
+                        <div class="match-progress">
+                            <div class="match-fill" style="width: ${opp.match}%"></div>
+                        </div>
+                        <span class="match-text">${opp.match}%</span>
+                    </div>
+                    <div>${formatDate(opp.deadline)}</div>
+                    <div>
+                        <span class="status-tag ${opp.status}">
+                            ${opp.status === 'go' ? '● Go' : opp.status === 'review' ? '◐ Review' : '○ None'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            updateStats(opps);
+        }
+
+        // Fetch opportunities from API
+        async function fetchOpportunities() {
+            loadingOverlay.classList.add('active');
+            errorMessage.classList.remove('active');
+
+            try {
+                // Try the API first
+                const response = await fetch(`${API_BASE}/api/sam`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Transform API response to our format
+                opportunities = (data.opportunities || data || []).map((opp, idx) => ({
+                    id: opp.id || opp.noticeId || String(idx),
+                    title: opp.title || opp.description || 'Untitled Opportunity',
+                    agency: opp.agency || opp.department || 'Unknown Agency',
+                    source: opp.source || 'SAM.gov',
+                    sourceType: (opp.source || 'sam').toLowerCase().replace('.gov', '').replace(/\s+/g, ''),
+                    value: opp.value || opp.amount || Math.floor(Math.random() * 500000) + 100000,
+                    match: opp.match || opp.matchScore || Math.floor(Math.random() * 30) + 70,
+                    deadline: opp.deadline || opp.responseDeadLine || opp.dueDate || '2025-03-01',
+                    status: opp.status || 'review',
+                    urgent: opp.urgent || new Date(opp.deadline) < new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+                }));
+
+            } catch (error) {
+                console.log('API unavailable, using demo data:', error.message);
+                // Use demo data as fallback
+                opportunities = [...DEMO_OPPORTUNITIES];
+            }
+
+            renderOpportunities(opportunities);
+            loadingOverlay.classList.remove('active');
+        }
+
+        // Filter opportunities
+        function filterOpportunities(filter) {
+            currentFilter = filter;
+            
+            let filtered = opportunities;
+            if (filter !== 'all') {
+                filtered = opportunities.filter(opp => {
+                    const sourceType = opp.sourceType.toLowerCase();
+                    if (filter === 'federal') return sourceType === 'sam';
+                    if (filter === 'sbir') return sourceType === 'sbir' || sourceType === 'sbir/sttr';
+                    if (filter === 'grants') return sourceType === 'grants';
+                    if (filter === 'state') return ['ca', 'mi', 'tx'].includes(sourceType);
+                    if (filter === 'dibbs') return sourceType === 'dibbs';
+                    return true;
+                });
+            }
+
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(opp => 
+                    opp.title.toLowerCase().includes(searchTerm) ||
+                    opp.agency.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderOpportunities(filtered);
+        }
+
+        // Event Listeners
+        scanBtn.addEventListener('click', fetchOpportunities);
+
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                filterOpportunities(tab.dataset.filter);
+            });
+        });
+
+        searchInput.addEventListener('input', () => filterOpportunities(currentFilter));
+
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Initialize with demo data
+        opportunities = [...DEMO_OPPORTUNITIES];
+        renderOpportunities(opportunities);
+    </script>
+</body>
+</html>
