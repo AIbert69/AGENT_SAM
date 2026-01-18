@@ -777,6 +777,301 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+
+        /* Chat Panel Styles */
+        .chat-panel {
+            display: none;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        .chat-panel.active {
+            display: flex;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0d1320;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #1e293b;
+            border-bottom: 1px solid #2d3a4f;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .chat-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .chat-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .chat-status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chat-message.assistant .message-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .chat-message.user .message-avatar {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .chat-message.assistant .message-content {
+            background: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message.user .message-content {
+            background: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-content pre {
+            background: #0a0f1a;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+
+        .message-content code {
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #1e293b;
+            border-top: 1px solid #2d3a4f;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: #0d1320;
+            border: 1px solid #2d3a4f;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #e2e8f0;
+            outline: none;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+        }
+
+        .chat-input:focus {
+            border-color: #10b981;
+        }
+
+        .chat-input::placeholder {
+            color: #64748b;
+        }
+
+        .chat-send-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: #10b981;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-send-btn:hover {
+            background: #059669;
+        }
+
+        .chat-send-btn:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #1e293b;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #64748b;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-4px); }
+        }
+
+        /* Tab content hiding */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Status tag for nogo */
+        .status-tag.nogo {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        /* Decision buttons */
+        .decision-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .decision-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .decision-btn.go {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .decision-btn.go:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .decision-btn.nogo {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .decision-btn.nogo:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .decision-btn.go.active {
+            background: #10b981;
+            color: white;
+        }
+
+        .decision-btn.nogo.active {
+            background: #ef4444;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -1021,7 +1316,7 @@
                     <div>Value</div>
                     <div>Match</div>
                     <div>Deadline</div>
-                    <div>Status</div>
+                    <div>Decision</div>
                 </div>
                 <div id="opportunities-list">
                     <!-- Opportunities will be loaded here -->
@@ -1137,6 +1432,57 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Chat Panel (Agent_SAM) -->
+    <div class="chat-panel" id="chat-panel">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-avatar">SAM</div>
+                <div>
+                    <div class="chat-title">Agent_SAM</div>
+                    <div class="chat-subtitle">AI Business Development Assistant</div>
+                </div>
+                <div class="chat-status">
+                    <span class="chat-status-dot"></span>
+                    Online
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message assistant">
+                    <div class="message-avatar">SAM</div>
+                    <div class="message-content">
+                        Hey Albert! I'm Agent_SAM, your AI business development assistant. I have full access to:
+
+<strong>Prime Contracts</strong> - GO/NO-GO recommendations, win strategies
+<strong>Subcontracting</strong> - Find primes, draft outreach emails
+<strong>Purchasing</strong> - Equipment costs, BOMs for proposals
+<strong>Proposals</strong> - Technical approach, past performance
+
+What would you like to work on today?
+                    </div>
+                </div>
+            </div>
+            <div class="typing-indicator" id="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+            <div class="chat-input-wrapper">
+                <textarea
+                    class="chat-input"
+                    id="chat-input"
+                    placeholder="Ask about opportunities, proposals, or bid strategies..."
+                    rows="1"
+                ></textarea>
+                <button class="chat-send-btn" id="chat-send-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1302,10 +1648,9 @@
                         <span class="match-text">${opp.match}%</span>
                     </div>
                     <div>${formatDate(opp.deadline)}</div>
-                    <div>
-                        <span class="status-tag ${opp.status}">
-                            ${opp.status === 'go' ? '● Go' : opp.status === 'review' ? '◐ Review' : '○ None'}
-                        </span>
+                    <div class="decision-buttons">
+                        <button class="decision-btn go ${opp.status === 'go' ? 'active' : ''}" onclick="updateOpportunityStatus('${opp.id}', 'go'); event.stopPropagation();">GO</button>
+                        <button class="decision-btn nogo ${opp.status === 'nogo' ? 'active' : ''}" onclick="updateOpportunityStatus('${opp.id}', 'nogo'); event.stopPropagation();">NO</button>
                     </div>
                 </div>
             `).join('');
@@ -1398,15 +1743,179 @@
 
         searchInput.addEventListener('input', () => filterOpportunities(currentFilter));
 
+        // Tab navigation with content switching
+        const mainContainer = document.querySelector('.main-container');
+        const statsGrid = document.querySelector('.stats-grid').parentElement;
+        const chatPanel = document.getElementById('chat-panel');
+
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+
+                const tabName = tab.dataset.tab;
+
+                if (tabName === 'agent') {
+                    // Show chat panel, hide scanner
+                    mainContainer.style.display = 'none';
+                    statsGrid.style.display = 'none';
+                    chatPanel.classList.add('active');
+                } else {
+                    // Show scanner, hide chat panel
+                    mainContainer.style.display = 'grid';
+                    statsGrid.style.display = 'block';
+                    chatPanel.classList.remove('active');
+                }
             });
         });
 
+        // ==================== CHAT FUNCTIONALITY ====================
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send-btn');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        // Chat history for context
+        let chatHistory = [];
+
+        // Auto-resize chat input
+        chatInput.addEventListener('input', () => {
+            chatInput.style.height = 'auto';
+            chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+        });
+
+        // Send message on Enter (Shift+Enter for new line)
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+
+        chatSendBtn.addEventListener('click', sendChatMessage);
+
+        async function sendChatMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Clear input
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+
+            // Add user message to UI
+            addMessageToChat('user', message);
+
+            // Show typing indicator
+            typingIndicator.classList.add('active');
+            chatSendBtn.disabled = true;
+
+            try {
+                // Build context with current opportunities
+                const context = {
+                    opportunities: opportunities.map(o => ({
+                        id: o.id,
+                        title: o.title,
+                        agency: o.agency,
+                        value: o.value,
+                        matchScore: o.match,
+                        closeDate: o.deadline,
+                        source: o.source,
+                        setAside: o.setAside || 'None',
+                        naicsCode: o.naicsCode || ''
+                    })),
+                    pipeline: opportunities.reduce((acc, o) => {
+                        acc[o.id] = { status: o.status };
+                        return acc;
+                    }, {})
+                };
+
+                const response = await fetch(`${API_BASE}/api/agent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        context: context
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success && data.response) {
+                    addMessageToChat('assistant', data.response);
+                } else {
+                    addMessageToChat('assistant', 'Sorry, I encountered an error. Please try again.');
+                }
+
+            } catch (error) {
+                console.error('Chat error:', error);
+                addMessageToChat('assistant', `I'm having trouble connecting. Error: ${error.message}. Make sure ANTHROPIC_API_KEY is set in Vercel environment variables.`);
+            }
+
+            // Hide typing indicator
+            typingIndicator.classList.remove('active');
+            chatSendBtn.disabled = false;
+        }
+
+        function addMessageToChat(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${role}`;
+
+            const avatar = role === 'assistant' ? 'SAM' : 'AM';
+
+            // Format content with basic markdown support
+            const formattedContent = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/\n/g, '<br>');
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">${formattedContent}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Store in history
+            chatHistory.push({ role, content });
+        }
+
+        // ==================== DECISION TRACKING ====================
+        // Store decisions in localStorage for persistence
+        let decisions = JSON.parse(localStorage.getItem('sam_decisions') || '{}');
+
+        function updateOpportunityStatus(id, status) {
+            // Update in memory
+            const opp = opportunities.find(o => o.id === id);
+            if (opp) {
+                opp.status = status;
+            }
+
+            // Save to localStorage
+            decisions[id] = { status, timestamp: new Date().toISOString() };
+            localStorage.setItem('sam_decisions', JSON.stringify(decisions));
+
+            // Re-render
+            renderOpportunities(opportunities);
+        }
+
         // Initialize with demo data
         opportunities = [...DEMO_OPPORTUNITIES];
+
+        // Apply saved decisions
+        opportunities.forEach(opp => {
+            if (decisions[opp.id]) {
+                opp.status = decisions[opp.id].status;
+            }
+        });
+
         renderOpportunities(opportunities);
     </script>
 </body>
